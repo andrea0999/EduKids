@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import cg.edukids.drawing.StartDrawingActivity;
+
 public class HomeActivity extends AppCompatActivity {
 
-    private Button drawingNextBtn;
+    private Button drawingNextBtn,drawingBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,5 +25,14 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(),LudoGameActivity.class));
             }
         });
+
+        drawingBtn = findViewById(R.id.drawingBtn);
+        drawingBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), StartDrawingActivity.class));
+            }
+        });
+
     }
 }

@@ -43,6 +43,10 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
 
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.thebluealliance:spectrum:0.7.1'
+
 
 
 

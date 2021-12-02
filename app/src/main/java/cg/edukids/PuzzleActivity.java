@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import cg.edukids.memory.MemoryActivity;
+
 public class PuzzleActivity extends AppCompatActivity {
 
     private Button puzzleNextBtn, puzzleBackBtn;
@@ -20,7 +22,7 @@ public class PuzzleActivity extends AppCompatActivity {
         puzzleNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),MemoryActivity.class));
+                startActivity(new Intent(getApplicationContext(), MemoryActivity.class));
             }
         });
 
