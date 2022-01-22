@@ -12,4 +12,6 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"></style>
+    <style name="AppTheme1" parent="android:Theme.NoTitleBar.Fullscreen"></style> //for Ludo
+
 </resources>

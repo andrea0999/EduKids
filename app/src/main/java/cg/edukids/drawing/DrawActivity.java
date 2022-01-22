@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,6 +19,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.builder.ColorPickerClickListener;
+import com.flask.colorpicker.builder.ColorPickerDialogBuilder;
 import com.thebluealliance.spectrum.SpectrumPalette;
 
 import java.io.File;
@@ -224,5 +228,27 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
     @Override
     public void onColorSelected(int color) {
         General.COLOR_SELECTED = color;
+    }
+
+    public void selectColor(View view) {
+        ColorPickerDialogBuilder.with(this)
+                .initialColor(General.COLOR_SELECTED)
+                .setTitle("Select Color")
+                .density(12)
+                .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
+                .setPositiveButton("OK", new ColorPickerClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int lastSelectedColor, Integer[] allColors) {
+                        General.COLOR_SELECTED = lastSelectedColor;
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface d, int i) {
+                        d.dismiss();
+                    }
+                })
+                .build()
+                .show();
     }
 }

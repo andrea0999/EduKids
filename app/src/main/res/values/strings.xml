@@ -4,4 +4,12 @@
     <string name="facebook_app_id">577958786830545</string>
     <string name="fb_login_protocol_scheme">fb577958786830545</string>
 
+    <string name="title_activity_game_over">GameOver</string>
+    <string name="title_activity_game_over_red">GameOverRed</string>
+    <string name="title_activity_game_over_green">GameOverGreen</string>
+    <string name="title_activity_game_over_blue">GameOverBlue</string>
+    <string name="title_activity_game_over_yellow">GameOverYellow</string>
+    <string name="ludo_game">Ludo Game</string>
+    <string name="splash">Splash</string>
+
 </resources>

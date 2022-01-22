@@ -7,8 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import cg.edukids.PuzzleActivity;
 import cg.edukids.R;
+import cg.edukids.puzzle.PuzzleActivity;
 
 public class MemoryActivity extends AppCompatActivity {
 

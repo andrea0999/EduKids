@@ -24,30 +24,31 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     private List<Integer> listImages;
 
     public ImageAdapter(Context context){
-        mcontext = context;listImages = getImages();
+        mcontext = context;
+        listImages = getImages();
     }
 
     private List<Integer> getImages() {
         List<Integer> results = new ArrayList<>();
 
-        results.add(R.drawable.img01);
-        results.add(R.drawable.img02);
-        results.add(R.drawable.img03);
-        results.add(R.drawable.img04);
-        results.add(R.drawable.img05);
-        results.add(R.drawable.img06);
-        results.add(R.drawable.img07);
-        results.add(R.drawable.img08);
-        results.add(R.drawable.img09);
-        results.add(R.drawable.img10);
-        results.add(R.drawable.img11);
-        results.add(R.drawable.img12);
-        results.add(R.drawable.img13);
-        results.add(R.drawable.img14);
-        results.add(R.drawable.img15);
-        results.add(R.drawable.img16);
-        results.add(R.drawable.img17);
-        results.add(R.drawable.img18);
+            results.add(R.drawable.img01);
+            results.add(R.drawable.img02);
+            results.add(R.drawable.img03);
+            results.add(R.drawable.img04);
+            results.add(R.drawable.img05);
+            results.add(R.drawable.img06);
+            results.add(R.drawable.img07);
+            results.add(R.drawable.img08);
+            results.add(R.drawable.img09);
+            results.add(R.drawable.img10);
+            results.add(R.drawable.img11);
+            results.add(R.drawable.img12);
+            results.add(R.drawable.img13);
+            results.add(R.drawable.img14);
+            results.add(R.drawable.img15);
+            results.add(R.drawable.img16);
+            results.add(R.drawable.img17);
+            results.add(R.drawable.img18);
 
         return results;
     }

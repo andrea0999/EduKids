@@ -21,12 +21,30 @@
         android:layout_weight="1"
         android:id="@+id/drawView"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/gris_light"
+        android:gravity="center">
+
     <com.thebluealliance.spectrum.SpectrumPalette
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="8dp"
+        android:background="@color/white"
         app:spectrum_autoPadding="true"
         app:spectrum_outlineWidth="2dp"
         app:spectrum_colors="@array/colorsPalett"
-        android:id="@+id/palette"/>
+        android:id="@+id/palette" />
 
+     <Button
+         android:layout_width="40dp"
+         android:layout_height="100dp"
+         android:layout_margin="2dp"
+         android:background="@drawable/multi_colors"
+         android:onClick="selectColor"/>
+
+    </LinearLayout>
 </LinearLayout>

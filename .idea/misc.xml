@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2703125" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/binoculars.xml" value="0.2703125" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/circleBtn.xml" value="0.2703125" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/circlebtn.xml" value="0.28229166666666666" />
@@ -12,27 +13,45 @@
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/icons8_google.xml" value="0.12135416666666667" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/item_images.xml" value="0.2703125" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/login.xml" value="0.12135416666666667" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/multi_colors.xml" value="0.13333333333333333" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/password_reset.xml" value="0.14635416666666667" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/questionmark.xml" value="0.2703125" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/rectangle.xml" value="0.2703125" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/rectangle_blue.xml" value="0.2703125" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/registerhere.xml" value="0.12135416666666667" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/registrationform.xml" value="0.12135416666666667" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/rocket.xml" value="0.2703125" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/save.xml" value="0.26615384615384613" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/spy.xml" value="0.2703125" />
-        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_draw.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/square_blue.xml" value="0.2703125" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/square_green.xml" value="0.2703125" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/square_red.xml" value="0.2703125" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/drawable/square_yellow.xml" value="0.2703125" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_blue_player.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_draw.xml" value="0.1" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_facebook.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_google.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_green_player.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_ludo_game.xml" value="0.19791666666666666" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_memory.xml" value="0.19791666666666666" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_profile.xml" value="0.264" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_puzzle.xml" value="0.19791666666666666" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_puzzle_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_red_player.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_registration.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_select_player.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_drawing.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_ludo.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_memory.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_puzzle.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_yellow_player.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/item_images.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/item_images_puzzle.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.10677083333333333" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.18854166666666666" />
       </map>
     </option>
   </component>

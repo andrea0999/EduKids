@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cg.edukids" >
+    package="cg.edukids">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,7 +15,38 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/FullScreen" >
+        android:theme="@style/FullScreen">
+        <activity
+            android:name=".ludo.StartLudoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ludo.YellowPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ludo.RedPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ludo.GreenPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ludo.BluePlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ludo.SelectPlayerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ludo.LudoGameActivity"
+            android:exported="false" />
+        <activity
+            android:name=".puzzle.StartPuzzleActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".puzzle.PuzzleListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".puzzle.PuzzleActivity"
+            android:exported="false" />
         <activity
             android:name=".memory.StartMemoryActivity"
             android:exported="false" />
@@ -38,12 +69,6 @@
             android:name=".FacebookActivity"
             android:exported="false" />
         <activity
-            android:name=".PuzzleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LudoGameActivity"
-            android:exported="false" />
-        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
@@ -51,7 +76,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

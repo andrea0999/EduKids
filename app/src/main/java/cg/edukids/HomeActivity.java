@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import cg.edukids.drawing.StartDrawingActivity;
+import cg.edukids.ludo.LudoGameActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -22,7 +23,7 @@ public class HomeActivity extends AppCompatActivity {
         drawingNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),LudoGameActivity.class));
+                startActivity(new Intent(getApplicationContext(), LudoGameActivity.class));
             }
         });
 
