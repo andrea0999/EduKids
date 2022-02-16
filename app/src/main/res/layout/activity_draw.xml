@@ -15,12 +15,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <cg.edukids.drawing.widget.DrawView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:id="@+id/drawView"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,14 +31,35 @@
         app:spectrum_autoPadding="true"
         app:spectrum_outlineWidth="2dp"
         app:spectrum_colors="@array/colorsPalett"
-        android:id="@+id/palette" />
+        android:id="@+id/palette" >
+    </com.thebluealliance.spectrum.SpectrumPalette>
 
-     <Button
-         android:layout_width="40dp"
-         android:layout_height="100dp"
-         android:layout_margin="2dp"
-         android:background="@drawable/multi_colors"
-         android:onClick="selectColor"/>
+     <LinearLayout
+         android:layout_width="wrap_content"
+         android:layout_height="match_parent"
+         android:orientation="vertical"
+         android:gravity="center">
+
+         <Button
+             android:layout_width="40dp"
+             android:layout_height="100dp"
+             android:layout_margin="2dp"
+             android:background="@drawable/multi_colors"
+             android:onClick="selectColor"/>
+
+         <ImageButton
+             android:layout_width="40dp"
+             android:layout_height="wrap_content"
+             android:src="@drawable/ic_baseline_undo_24"
+             android:onClick="undoAction"/>
+     </LinearLayout>
+
 
     </LinearLayout>
+    <cg.edukids.drawing.widget.DrawView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:id="@+id/drawView"
+        />
 </LinearLayout>

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import cg.edukids.R;
 import cg.edukids.drawing.interfaceImage.ImageOnClick;
 
-public class ImageViewHolder extends RecyclerView.ViewHolder{
+public class ImageViewHolder extends RecyclerView.ViewHolder {
 
     public ImageView imageView;
     private ImageOnClick imageOnClick;
@@ -26,7 +26,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageOnClick.onClcik(getAdapterPosition());
+                imageOnClick.onClick(getAdapterPosition());
             }
         });
     }

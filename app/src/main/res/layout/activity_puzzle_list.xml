@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ccc"
-    tools:context=".drawing.StartDrawingActivity">
+    tools:context=".puzzle.PuzzleListActivity">
 
 
         `<com.google.android.material.appbar.AppBarLayout
@@ -16,7 +16,7 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_view_images"
+            android:id="@+id/recycle_view_images_puzzle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 </LinearLayout>

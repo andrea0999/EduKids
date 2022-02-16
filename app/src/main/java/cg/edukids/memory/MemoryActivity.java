@@ -8,11 +8,12 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cg.edukids.R;
+import cg.edukids.profile.ProfileActivity;
 import cg.edukids.puzzle.PuzzleActivity;
 
 public class MemoryActivity extends AppCompatActivity {
 
-    private Button memoryBackBtn,memoryBtn;
+    private Button memoryBackBtn,memoryBtn, checkProgressBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,15 @@ public class MemoryActivity extends AppCompatActivity {
         memoryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), StartMemoryActivity.class));
+                startActivity(new Intent(getApplicationContext(), MemoryListActivity.class));
+            }
+        });
+
+        checkProgressBtn = findViewById(R.id.checkProgressBtn);
+        checkProgressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
 

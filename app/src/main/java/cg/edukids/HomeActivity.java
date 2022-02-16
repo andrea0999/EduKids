@@ -9,10 +9,11 @@ import android.widget.Button;
 
 import cg.edukids.drawing.StartDrawingActivity;
 import cg.edukids.ludo.LudoGameActivity;
+import cg.edukids.profile.ProfileActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Button drawingNextBtn,drawingBtn;
+    private Button drawingNextBtn, drawingBtn, checkProgressBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,14 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), StartDrawingActivity.class));
+            }
+        });
+
+        checkProgressBtn = findViewById(R.id.checkProgressBtn);
+        checkProgressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
 

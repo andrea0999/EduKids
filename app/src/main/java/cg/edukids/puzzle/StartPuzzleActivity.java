@@ -2,9 +2,11 @@ package cg.edukids.puzzle;
 
 import static java.lang.Math.abs;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -14,11 +16,17 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import cg.edukids.R;
 import cg.edukids.puzzle.puzzlePiece.PuzzlePiece;
@@ -27,6 +35,11 @@ import cg.edukids.puzzle.touchListener.TouchListener;
 public class StartPuzzleActivity extends AppCompatActivity {
 
     ArrayList<PuzzlePiece> pieces;
+    private TextView timerText;
+    private Timer timer;
+    private TimerTask timerTask;
+    private Double time = 0.0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +48,10 @@ public class StartPuzzleActivity extends AppCompatActivity {
 
         final RelativeLayout layout = findViewById(R.id.layoutRelativePuzzle);
         ImageView imageView = findViewById(R.id.grid);
+
+        timerText = findViewById(R.id.timerPuzzle);
+        timer = new Timer();
+        startTimer();
 
         // run image related code after the view was laid out
         // to have all dimensions calculated
@@ -51,6 +68,36 @@ public class StartPuzzleActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void startTimer() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        time++;
+                        timerText.setText(getTimerText());
+                    }
+                });
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+    private String getTimerText(){
+        int getTime = (int) Math.round(time);
+
+        int hours = ((getTime % 86400) % 3600) % 60;
+        int minutes = ((getTime % 86400) % 3600) / 60;
+        int seconds = ((getTime % 86400) /3600);
+
+        return formatTime(seconds, minutes, hours);
+    }
+    private String formatTime(int hours, int minutes, int seconds){
+        return String.format("%02d", hours) + " : "
+                + String.format("%02d", minutes) + " : "
+                + String.format("%02d", seconds);
     }
 
     private ArrayList<PuzzlePiece> splitImage() {
@@ -108,7 +155,7 @@ public class StartPuzzleActivity extends AppCompatActivity {
                 // this bitmap will hold our final puzzle piece image
                 Bitmap puzzlePiece = Bitmap.createBitmap(pieceWidth + offsetX, pieceHeight + offsetY, Bitmap.Config.ARGB_8888);
 
-               // draw path
+                // draw path
                 int bumpSize = pieceHeight / 4;
                 Canvas canvas = new Canvas(puzzlePiece);
                 Path path = new Path();
@@ -227,6 +274,23 @@ public class StartPuzzleActivity extends AppCompatActivity {
         ret[1] = top;
 
         return ret;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_back,menu);
+        return true;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.close)
+            startActivity(new Intent(getApplicationContext(), PuzzleListActivity.class));
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

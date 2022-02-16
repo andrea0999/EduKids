@@ -10,10 +10,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import cg.edukids.R;
 import cg.edukids.ludo.LudoGameActivity;
 import cg.edukids.memory.MemoryActivity;
+import cg.edukids.profile.ProfileActivity;
 
 public class PuzzleActivity extends AppCompatActivity {
 
-    private Button puzzleNextBtn, puzzleBackBtn, puzzleBtn;
+    private Button puzzleNextBtn, puzzleBackBtn, puzzleBtn, checkProgressBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,14 @@ public class PuzzleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getApplicationContext(), PuzzleListActivity.class));
+            }
+        });
+
+        checkProgressBtn = findViewById(R.id.checkProgressBtn);
+        checkProgressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
     }

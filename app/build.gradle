@@ -35,7 +35,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:20.0.2'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.google.firebase:firebase-auth:19.2.0'
-    testImplementation 'junit:junit:4.+'
+    //implementation files('libs\\support-v4-r7.jar')
+    testImplementation 'junit:junit:4.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 
@@ -48,5 +49,29 @@ dependencies {
     implementation 'com.thebluealliance:spectrum:0.7.1'
 
     implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+    implementation 'com.google.firebase:firebase-storage:11.0.4'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.yalantis:ucrop:2.2.2'
+
+    //dexter permissions
+    implementation "com.karumi:dexter:5.0.0"
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    implementation 'com.github.bumptech.glide:annotations:4.7.1'
+    implementation('com.github.bumptech.glide:okhttp3-integration:4.0.0') {
+        exclude group: 'glide-parent'
+    }
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+    implementation "com.vorlonsoft:androidrate:1.2.0"
+    implementation 'com.github.yalantis:ucrop:2.2.2'
+
+
+    //Butterknife
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+
+
 
 }

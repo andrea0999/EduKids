@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import cg.edukids.R;
@@ -26,7 +28,7 @@ public class PuzzleListActivity extends AppCompatActivity {
 
     private void initView() {
 
-        recyclerView = findViewById(R.id.recycle_view_images);
+        recyclerView = findViewById(R.id.recycle_view_images_puzzle);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new ImageAdapter(this);
@@ -38,10 +40,21 @@ public class PuzzleListActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-        if(id == android.R.id.home)
+        if(id == android.R.id.home) {
             finish();
+        }else if(id == R.id.close) {
+            startActivity(new Intent(getApplicationContext(), PuzzleActivity.class));
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_back,menu);
+        return true;
+    }
+    //@RequiresApi(api = Build.VERSION_CODES.M)
+
 }
 
 

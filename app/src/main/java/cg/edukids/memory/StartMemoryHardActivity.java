@@ -1,21 +1,30 @@
 package cg.edukids.memory;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import cg.edukids.HomeActivity;
 import cg.edukids.R;
 
-public class StartMemoryActivity extends AppCompatActivity {
+public class StartMemoryHardActivity extends AppCompatActivity { //implements TimerAbstract {
 
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn10, btn11, btn12, btn13, btn14, btn15, btn16, btn17, btn18;
     private Integer[] cardsArray= {1, 2, 3, 4, 5, 6, 7, 8, 9,
@@ -25,11 +34,20 @@ public class StartMemoryActivity extends AppCompatActivity {
     private int firstCard, secondCard;
     private int clickedFirst, clickedSecond;
     private int cardNumber = 1;
+    private TextView timerText;
+    private Timer timer;
+    private TimerTask timerTask;
+    private Double time = 0.0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start_memory);
+        setContentView(R.layout.activity_start_memory_hard);
+
+        timerText = findViewById(R.id.timerMemoryHard);
+        timer = new Timer();
+        startTimer();
 
         findButton();
         setTagForButton();
@@ -40,6 +58,36 @@ public class StartMemoryActivity extends AppCompatActivity {
 
         buttonsSetOnClick();
 
+    }
+
+    private void startTimer() {
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        time++;
+                        timerText.setText(getTimerText());
+                    }
+                });
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
+    }
+    private String getTimerText(){
+        int getTime = (int) Math.round(time);
+
+        int hours = ((getTime % 86400) % 3600) % 60;
+        int minutes = ((getTime % 86400) % 3600) / 60;
+        int seconds = ((getTime % 86400) /3600);
+
+        return formatTime(seconds, minutes, hours);
+    }
+    private String formatTime(int hours, int minutes, int seconds){
+        return String.format("%02d", hours) + " : "
+                + String.format("%02d", minutes) + " : "
+                + String.format("%02d", seconds);
     }
 
     private void findButton(){
@@ -462,13 +510,15 @@ public class StartMemoryActivity extends AppCompatActivity {
                 btn17.getVisibility() == View.INVISIBLE &&
                 btn18.getVisibility() == View.INVISIBLE ){
 
-            AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryActivity.this);
+            timerTask.cancel();
+
+            AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryHardActivity.this);
             alertDialog.setMessage("You win, congrats!")
                        .setCancelable(false)
                        .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
                            @Override
                            public void onClick(DialogInterface dialog, int which) {
-                               Intent intent = new Intent(getApplicationContext(), StartMemoryActivity.class);
+                               Intent intent = new Intent(getApplicationContext(), StartMemoryHardActivity.class);
                                startActivity(intent);
                                finish();
                            }
@@ -484,6 +534,23 @@ public class StartMemoryActivity extends AppCompatActivity {
             dialog.show();
 
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_back,menu);
+        return true;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.close)
+            startActivity(new Intent(getApplicationContext(), MemoryListActivity.class));
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

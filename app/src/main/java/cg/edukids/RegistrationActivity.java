@@ -1,11 +1,15 @@
 package cg.edukids;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,12 +19,18 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import cg.edukids.drawing.StartDrawingActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
     private EditText remail, rpassword, rpassword2;
     private Button registrationConfigBtn;
     FirebaseAuth firebaseAuth;
+    DatabaseReference reff;
     //private ProgressBar progressBar;
 
 
@@ -70,11 +80,17 @@ public class RegistrationActivity extends AppCompatActivity {
                 //progressBar.setVisibility(View.VISIBLE);
 
                 //register the user in firebase
+                reff = FirebaseDatabase.getInstance().getReference();
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(RegistrationActivity.this, "User created", Toast.LENGTH_SHORT).show();
+                            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                            reff.child(currentFirebaseUser.getUid()).child("Email").setValue(remail);
+                            reff.child(currentFirebaseUser.getUid()).child("ImageURL").setValue("default");
+
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         }else {
                             Toast.makeText(RegistrationActivity.this,"Error !" + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
@@ -83,6 +99,26 @@ public class RegistrationActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_back,menu);
+        return true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.close){
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        }else if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

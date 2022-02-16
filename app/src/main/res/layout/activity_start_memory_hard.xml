@@ -5,13 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background2"
-    tools:context=".memory.StartMemoryActivity">
+    tools:context=".memory.StartMemoryHardActivity">
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/timerMemoryHard"
         android:layout_width="109dp"
         android:layout_height="22dp"
-        android:text="Scor"
+        android:text="00:00:00"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -1,9 +1,14 @@
 package cg.edukids.ludo;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -11,6 +16,7 @@ import android.widget.RelativeLayout;
 import java.util.Random;
 
 import cg.edukids.R;
+import cg.edukids.drawing.StartDrawingActivity;
 
 public class StartLudoActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -1490,4 +1496,24 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_back,menu);
+        return true;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.close){
+            startActivity(new Intent(getApplicationContext(), LudoGameActivity.class));
+        }else if(id == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

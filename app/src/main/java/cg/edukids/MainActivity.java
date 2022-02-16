@@ -4,8 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -21,6 +26,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Calendar;
+
+import cg.edukids.profile.ProfileActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -147,15 +156,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        NotificationChannel();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
 
+        if(Calendar.getInstance().after(calendar)){
+            calendar.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
-        test = findViewById(R.id.test);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-            }
-        });
+        Intent i = new Intent(MainActivity.this, MemoBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+
+    }
+    private void NotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "EduKids";
+            String description = "EduKids's Channel";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("Notification", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 }
