@@ -14,6 +14,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -44,10 +45,9 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
 
     private static final int PERMISION_REQUEST = 10001;
     DrawView drawView;
-    private String fileShare;
-    private Bitmap bitmapShare;
-
-    private String selectedImagePath;
+    //private String fileShare;
+    //private Bitmap bitmapShare;
+    //private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,10 +57,8 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
         drawView = findViewById(R.id.drawView);
         SpectrumPalette spectrumPalette = findViewById(R.id.palette);
         spectrumPalette.setOnColorSelectedListener(this);
-
-
-
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -196,8 +194,8 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
                 e.printStackTrace();
             }
 
-            fileShare = file_name;
-            bitmapShare = bitmap;
+            //fileShare = file_name;
+            //bitmapShare = bitmap;
 
         Toast.makeText(this, "Your drawing is saved!", Toast.LENGTH_SHORT).show();
         finish();

@@ -2,18 +2,15 @@ package cg.edukids.profile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,8 +43,14 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,16 +61,17 @@ import cg.edukids.R;
 public class ProfileActivity extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
     private Button logoutbtn, deletebtn;
     private ProgressBar progressBar;
 
     public static final int CAMERA_CODE = 200;
     public static final int GALLERY_CODE = 100;
-    Uri imageUri = null;
-    FirebaseUser user;
-    DatabaseReference reference;
+    private Uri imageUri = null;
+    private FirebaseUser user;
+    private StorageReference reference = FirebaseStorage.getInstance().getReference();
+    private DatabaseReference root;
     private TextView profileChangeBtn;
+    private ImageView profileImage;
 
     private int IMAGE_COMPRESSION = 80;
     private boolean lockAspectRatio = false, setBitmapMaxWidthHeight = false;
@@ -89,7 +93,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBarDelete);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+        user = firebaseAuth.getCurrentUser();
 
         logoutbtn = findViewById(R.id.logoutBtn);
         logoutbtn.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int x){
                         progressBar.setVisibility(View.VISIBLE);
-                        firebaseUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task){
                                 progressBar.setVisibility(View.GONE);
@@ -149,26 +153,26 @@ public class ProfileActivity extends AppCompatActivity {
         bitmapMaxWidth = intent.getIntExtra(INTENT_BITMAP_MAX_WIDTH, bitmapMaxWidth);
         bitmapMaxHeight = intent.getIntExtra(INTENT_BITMAP_MAX_HEIGHT, bitmapMaxHeight);
 
-        profileChangeBtn = findViewById(R.id.changeProfileBtn);
         Permissions();
+        profileChangeBtn = findViewById(R.id.changeProfileBtn);
+        profileImage = findViewById(R.id.profileImage);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
-
-        reference.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("RestrictedApi")
+        FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        root = FirebaseDatabase.getInstance().getReference().child(currentFirebaseUser.getUid()).child("ImageURL");
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        ValueEventListener postListener = new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Picasso.get().load(dataSnapshot.child(currentFirebaseUser.getUid()).child("ImageURL").getValue(String.class)).into(profileImage);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
             }
-        });
-
-
+        };
+        mDatabase.addValueEventListener(postListener);
 
         profileChangeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +182,22 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
     }
-
+    private Bitmap getImageBitmap(String url) {
+        Bitmap bm = null;
+        try {
+            URL aURL = new URL(url);
+            URLConnection conn = aURL.openConnection();
+            conn.connect();
+            InputStream is = conn.getInputStream();
+            BufferedInputStream bis = new BufferedInputStream(is);
+            bm = BitmapFactory.decodeStream(bis);
+            bis.close();
+            is.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bm;
+    }
     private void changeImage() {
 
         String[] options = {"Camera", "Gallery"};
@@ -199,8 +218,6 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         builder.create().show();
-
-
     }
 
     private void openGallery() {
@@ -256,7 +273,7 @@ public class ProfileActivity extends AppCompatActivity {
             imageUri = data.getData();
             cropImage(imageUri);
 
-            String filepath = "Photos/" + "userprofile_" + user.getUid();
+            String filepath = "Photos/" + user.getUid();
 
             StorageReference reference = FirebaseStorage.getInstance().getReference(filepath);
             reference.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -271,7 +288,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                             String imageURL = uri.toString();
 
-                            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("ImageURL", imageURL);
@@ -286,7 +303,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             Uri uri = imageUri;
 
-            String filepath = "Photos/" + "userprofile_" + user.getUid();
+            String filepath = "Photos/"+ user.getUid();
 
             StorageReference reference = FirebaseStorage.getInstance().getReference(filepath);
             reference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -301,7 +318,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                             String imageURL = uri.toString();
 
-                            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                            DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference().child(user.getUid());
 
                             HashMap<String, Object> hashMap = new HashMap<>();
                             hashMap.put("ImageURL", imageURL);

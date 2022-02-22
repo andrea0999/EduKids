@@ -43,13 +43,15 @@
                 android:orientation="horizontal">
 
 
-                <ImageView
+                <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:background="@drawable/circlebtn"
-                    android:id="@+id/profileImage"></ImageView>
+                    android:src="@drawable/circlebtn"
+                    app:civ_border_color="@android:color/black"
+                    app:civ_border_width="1dp"
+                    android:id="@+id/profileImage"/>
 
                 <TextView
                     android:id="@+id/changeProfileBtn"

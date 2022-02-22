@@ -12,7 +12,7 @@ import android.graphics.BitmapFactory;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-public class MemoBroadcast extends BroadcastReceiver {
+public class MemoBroadcast extends BroadcastReceiver { //use for daily notification
 
     @Override
     public void onReceive(Context context, Intent intent) {

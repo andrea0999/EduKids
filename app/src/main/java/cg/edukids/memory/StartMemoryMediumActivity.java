@@ -16,6 +16,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Timer;
@@ -38,6 +46,11 @@ public class StartMemoryMediumActivity extends AppCompatActivity {
     private Timer timer;
     private TimerTask timerTask;
     private Double time = 0.0;
+    private int attention, memory;
+    private int getAttention, getMemory;
+
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference reff = db.getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -390,9 +403,55 @@ public class StartMemoryMediumActivity extends AppCompatActivity {
                 btn12.getVisibility() == View.INVISIBLE ){
 
             timerTask.cancel();
+            String getTimer = (String) timerText.getText();
+            System.out.println(getTimer);
+            String seconds = getTimer.substring(10,12);
+            System.out.println(seconds);
+            int sec = Integer.parseInt(seconds);
+            System.out.println(sec);
+
+            String minute = getTimer.substring(5,7);
+            int min = Integer.parseInt(minute);
+
+            if( sec <= 45 && min == 0){
+                attention = 7;
+                memory = 7;
+            }else if( (min == 0 && sec > 45) && (min == 1 && sec <= 15)){
+                attention = 4;
+                memory = 4;
+            }else {
+                attention = 1;
+                memory = 1;
+            }
+
+            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            reff.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    getAttention = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child("attention").getValue(Integer.class);
+                    getMemory = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child("memory").getValue(Integer.class);
+                    System.out.println("getAttention: " + getAttention);
+
+                    if(getAttention < attention){
+                        System.out.println("if condition");
+                        reff.child(currentFirebaseUser.getUid()).child("Scor").child("attention").setValue(attention);
+                    }
+                    if(getMemory < memory){
+                        reff.child(currentFirebaseUser.getUid()).child("Scor").child("memory").setValue(memory);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
 
             AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryMediumActivity.this);
-            alertDialog.setMessage("You win, congrats!")
+            alertDialog.setTitle("You win, congrats!")
+                    .setMessage("Attention: " + attention +
+                            "\nMemory: " + memory)
                     .setCancelable(false)
                     .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
                         @Override

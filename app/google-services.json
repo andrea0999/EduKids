@@ -2,6 +2,7 @@
   "project_info": {
     "project_number": "307798230507",
     "project_id": "edukids-e5534",
+    "firebase_url": " https://edukids-e5534-default-rtdb.europe-west1.firebasedatabase.app",
     "storage_bucket": "edukids-e5534.appspot.com"
   },
   "client": [

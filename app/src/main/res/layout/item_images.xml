@@ -14,10 +14,4 @@
         android:layout_weight="1"
         android:scaleType="fitXY" />
 
-    <ImageButton
-        android:id="@+id/showWork"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/show_work" />
-
 </LinearLayout>

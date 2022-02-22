@@ -30,27 +30,22 @@ public class RegistrationActivity extends AppCompatActivity {
     private EditText remail, rpassword, rpassword2;
     private Button registrationConfigBtn;
     FirebaseAuth firebaseAuth;
-    DatabaseReference reff;
-    //private ProgressBar progressBar;
-
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference reff = db.getReference();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+        System.out.println("db: "+db + "reff: "+reff);
 
         remail = findViewById(R.id.email);
+        String email = remail.getText().toString();
         rpassword = findViewById(R.id.password);
         rpassword2 = findViewById(R.id.password2);
         registrationConfigBtn = findViewById(R.id.registrationConfigBtn);
         firebaseAuth = FirebaseAuth.getInstance();
-        //progressBar = findViewById(R.id.progressBar);
-
-        /*if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-            finish();
-        }*/
 
         registrationConfigBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,19 +72,17 @@ public class RegistrationActivity extends AppCompatActivity {
                     rpassword.setError("Password Must by >= 6 characters");
                 }
 
-                //progressBar.setVisibility(View.VISIBLE);
-
                 //register the user in firebase
-                reff = FirebaseDatabase.getInstance().getReference();
                 firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             Toast.makeText(RegistrationActivity.this, "User created", Toast.LENGTH_SHORT).show();
                             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                            reff.child(currentFirebaseUser.getUid()).child("Email").setValue(remail);
+                            System.out.println("curentUser: "+ currentFirebaseUser);
+                            reff.child(currentFirebaseUser.getUid()).child("Email").setValue(email);
                             reff.child(currentFirebaseUser.getUid()).child("ImageURL").setValue("default");
+                            reff.child(currentFirebaseUser.getUid()).child("Password").setValue(password);
 
                             startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         }else {

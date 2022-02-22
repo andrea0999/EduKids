@@ -50,7 +50,7 @@ public class  DrawView extends View {
         @Override
         public boolean onScale(ScaleGestureDetector detector){
             mScaleFactor *= detector.getScaleFactor();
-            mScaleFactor = Math.max(mMinZoom, Math.min(mScaleFactor,mMaxZoom));
+            mScaleFactor = Math.max(mScaleFactor, Math.min(mScaleFactor,mMaxZoom));
             invalidate();
 
             return true;
