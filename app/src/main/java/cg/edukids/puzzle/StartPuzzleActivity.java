@@ -20,11 +20,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,6 +37,8 @@ import cg.edukids.puzzle.touchListener.TouchListener;
 
 public class StartPuzzleActivity extends AppCompatActivity {
 
+    private ImageView imageView;
+    private RelativeLayout layout;
     ArrayList<PuzzlePiece> pieces;
     private TextView timerText;
     private Timer timer;
@@ -46,8 +51,8 @@ public class StartPuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_puzzle);
 
-        final RelativeLayout layout = findViewById(R.id.layoutRelativePuzzle);
-        ImageView imageView = findViewById(R.id.grid);
+        layout = findViewById(R.id.layoutRelativePuzzle);
+        imageView = findViewById(R.id.grid);
 
         timerText = findViewById(R.id.timerPuzzle);
         timer = new Timer();
@@ -59,12 +64,18 @@ public class StartPuzzleActivity extends AppCompatActivity {
             @Override
             public void run() {
                 pieces = splitImage();
-                TouchListener touchListener = new TouchListener();
+                TouchListener touchListener = new TouchListener(StartPuzzleActivity.this);
+                // shuffle pieces order
+                Collections.shuffle(pieces);
                 for(PuzzlePiece piece : pieces) {
-                    //ImageView iv = new ImageView(getApplicationContext());
-                    //iv.setImageBitmap(piece);
                     piece.setOnTouchListener(touchListener);
+
                     layout.addView(piece);
+                    // randomize position, on the bottom of the screen
+                    RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) piece.getLayoutParams();
+                    lParams.leftMargin = new Random().nextInt(layout.getWidth() - piece.pieceWidth);
+                    lParams.topMargin = layout.getHeight() - piece.pieceHeight;
+                    piece.setLayoutParams(lParams);
                 }
             }
         });
@@ -105,7 +116,7 @@ public class StartPuzzleActivity extends AppCompatActivity {
         int rows = 4;
         int cols = 3;
 
-        ImageView imageView = findViewById(R.id.grid);
+        //ImageView imageView = findViewById(R.id.grid);
         ArrayList<PuzzlePiece> pieces = new ArrayList<>(piecesNumber);
 
         // Get the bitmap of the source image
@@ -144,13 +155,14 @@ public class StartPuzzleActivity extends AppCompatActivity {
                 }
                 //pieces.add(Bitmap.createBitmap(bitmap, xCoord, yCoord, pieceWidth, pieceHeight));
                 // apply the offset to each piece
-                Bitmap pieceBitmap = Bitmap.createBitmap(croppedBitmap,  xCoord - offsetX, yCoord - offsetY, pieceWidth + offsetX, pieceHeight + offsetY);
+                Bitmap pieceBitmap = Bitmap.createBitmap(croppedBitmap, xCoord - offsetX, yCoord - offsetY, pieceWidth + offsetX, pieceHeight + offsetY);
                 PuzzlePiece piece = new PuzzlePiece(getApplicationContext());
                 piece.setImageBitmap(pieceBitmap);
                 piece.xCoord = xCoord - offsetX + imageView.getLeft();
                 piece.yCoord = yCoord - offsetY + imageView.getTop();
                 piece.pieceWidth = pieceWidth + offsetX;
                 piece.pieceHeight = pieceHeight + offsetY;
+                //pieces.add(piece);
 
                 // this bitmap will hold our final puzzle piece image
                 Bitmap puzzlePiece = Bitmap.createBitmap(pieceWidth + offsetX, pieceHeight + offsetY, Bitmap.Config.ARGB_8888);
@@ -274,6 +286,22 @@ public class StartPuzzleActivity extends AppCompatActivity {
         ret[1] = top;
 
         return ret;
+    }
+
+    public void checkGameOver() {
+        if (isGameOver()) {
+            finish();
+        }
+    }
+
+    private boolean isGameOver() {
+        for (PuzzlePiece piece : pieces) {
+            if (piece.canMove) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override

@@ -1,12 +1,10 @@
 package cg.edukids.profile;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +23,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -46,11 +49,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
 import com.yalantis.ucrop.UCrop;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -82,6 +81,15 @@ public class ProfileActivity extends AppCompatActivity {
     private int ASPECT_RATIO_X = 16, ASPECT_RATIO_Y = 9, bitmapMaxWidth = 1000, bitmapMaxHeight = 1000;
     public static final String INTENT_BITMAP_MAX_WIDTH = "max_width";
     public static final String INTENT_BITMAP_MAX_HEIGHT = "max_height";
+
+    private LineChart lineChart1, lineChart2, lineChart3;
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference reff = db.getReference();
+
+    private List<String> listKey = new ArrayList<>();
+    private List<Integer> listAttention = new ArrayList<>();
+    private List<Integer> listMemory = new ArrayList<>();
+    private List<Integer> listPatience = new ArrayList<>();
 
 
 
@@ -181,23 +189,64 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        lineChart1 = (LineChart) findViewById(R.id.lineChart1);
+        lineChart2 = (LineChart) findViewById(R.id.lineChart2);
+        lineChart3 = (LineChart) findViewById(R.id.lineChart3);
+        reff
+                .child(currentFirebaseUser.getUid()).child("Scor")
+                .addValueEventListener(new ValueEventListener() {
+                    public void onDataChange(DataSnapshot snapshot) {
+                        for (DataSnapshot c : snapshot.getChildren()) {
+                            System.out.println("childKey: " + (String) c.getKey());
+                            listKey.add(c.getKey());
+                            listAttention.add(snapshot.child(c.getKey()).child("attention").getValue(Integer.class));
+                            System.out.println("profileActivity listAttention[0]: " + listAttention.get(0));
+                            listMemory.add(snapshot.child(c.getKey()).child("memory").getValue(Integer.class));
+                            listPatience.add(snapshot.child(c.getKey()).child("patience").getValue(Integer.class));
+                        }
+
+                        showChart(lineChart1, listAttention, "Attention", Color.GREEN);
+                        showChart(lineChart2, listMemory, "Memory", Color.BLUE);
+                        showChart(lineChart3, listPatience, "Patience", Color.RED);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
     }
-    private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        try {
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+    private void showChart(LineChart lineChart, List<Integer> list, String s, int color){
+        ArrayList<String> xAXES = new ArrayList<>();
+        ArrayList<Entry> yAXESvalue = new ArrayList<>();
+
+        for(int i=0; i< listKey.size(); i++) {
+            int attention = list.get(i);
+            yAXESvalue.add(new Entry(attention, i));
+            xAXES.add(String.valueOf(listKey.get(i)));
         }
-        return bm;
+
+        String[] xaxes = new String[xAXES.size()];
+        for(int i=0; i<xAXES.size();i++){
+            xaxes[i] = xAXES.get(i).toString();
+        }
+
+        ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
+
+        LineDataSet lineDataSet = new LineDataSet(yAXESvalue,s);
+        lineDataSet.setDrawCircles(false);
+        lineDataSet.setColor(color);
+
+        lineDataSets.add(lineDataSet);
+
+        lineChart.setData(new LineData(xaxes,lineDataSets));
+        lineChart.setVisibleXRangeMaximum(65f);
     }
+
     private void changeImage() {
 
         String[] options = {"Camera", "Gallery"};

@@ -9,11 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import cg.edukids.puzzle.StartPuzzleActivity;
 import cg.edukids.puzzle.puzzlePiece.PuzzlePiece;
 
 public class TouchListener implements View.OnTouchListener {
     private float xDelta;
     private float yDelta;
+    private StartPuzzleActivity activity;
+
+    public TouchListener(StartPuzzleActivity activity) {
+        this.activity = activity;
+    }
+
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -47,6 +54,7 @@ public class TouchListener implements View.OnTouchListener {
                     piece.setLayoutParams(lParams);
                     piece.canMove = false;
                     sendViewToBack(piece);
+                    activity.checkGameOver();
                 }
                 break;
         }

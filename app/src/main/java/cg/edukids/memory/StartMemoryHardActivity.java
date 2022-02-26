@@ -24,7 +24,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,6 +50,9 @@ public class StartMemoryHardActivity extends AppCompatActivity { //implements Ti
     private Double time = 0.0;
     private int attention, memory;
     private int getAttention, getMemory;
+    private Calendar calendar = Calendar.getInstance();;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");;
+    private String date = dateFormat.format(calendar.getTime());
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference reff = db.getReference();
@@ -546,20 +551,25 @@ public class StartMemoryHardActivity extends AppCompatActivity { //implements Ti
             }
 
             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            String x = date.substring(0,2);
+            String y = date.substring(3,5);
+            String z = date.substring(6,10);
+            System.out.println(x + " " + y + " " + z);
+            String total = x + y + z;
 
             reff.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    getAttention = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child("attention").getValue(Integer.class);
-                    getMemory = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child("memory").getValue(Integer.class);
+                    getAttention = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child(total).child("attention").getValue(Integer.class);
+                    getMemory = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child(total).child("memory").getValue(Integer.class);
                     System.out.println("getAttention: " + getAttention);
 
                     if(getAttention < attention){
                         System.out.println("if condition");
-                        reff.child(currentFirebaseUser.getUid()).child("Scor").child("attention").setValue(attention);
+                        reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("attention").setValue(attention);
                     }
                     if(getMemory < memory){
-                        reff.child(currentFirebaseUser.getUid()).child("Scor").child("memory").setValue(memory);
+                        reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("memory").setValue(memory);
                     }
                 }
 

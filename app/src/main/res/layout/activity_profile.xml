@@ -44,9 +44,9 @@
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_width="110dp"
+                    android:layout_height="110dp"
+                    android:layout_marginLeft="25dp"
                     android:layout_marginTop="20dp"
                     android:src="@drawable/circlebtn"
                     app:civ_border_color="@android:color/black"
@@ -57,8 +57,8 @@
                     android:id="@+id/changeProfileBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="-95dp"
-                    android:layout_marginTop="125dp"
+                    android:layout_marginLeft="-105dp"
+                    android:layout_marginTop="128dp"
                     android:text="Change Image"
                     android:textAlignment="center"
                     android:textStyle="bold" />
@@ -72,7 +72,7 @@
                         android:id="@+id/logoutBtn"
                         android:layout_width="150dp"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="65dp"
+                        android:layout_marginLeft="85dp"
                         android:layout_marginTop="25dp"
                         android:layout_weight="10"
                         android:text="LogOut"
@@ -82,7 +82,7 @@
                         android:id="@+id/deleteBtn"
                         android:layout_width="150dp"
                         android:layout_height="47dp"
-                        android:layout_marginLeft="65dp"
+                        android:layout_marginLeft="85dp"
                         android:layout_marginTop="15dp"
                         android:layout_weight="10"
                         android:drawableLeft="@drawable/icons8_delete"
@@ -117,6 +117,29 @@
 
             </LinearLayout>
 
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="400dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="500dp"
+                android:id="@+id/lineChart1"
+                android:layout_marginTop="30dp">
+            </com.github.mikephil.charting.charts.LineChart>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="400dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="500dp"
+                android:id="@+id/lineChart2"
+                android:layout_marginTop="30dp">
+            </com.github.mikephil.charting.charts.LineChart>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="400dp"
+                android:layout_marginLeft="5dp"
+                android:layout_height="500dp"
+                android:id="@+id/lineChart3"
+                android:layout_marginTop="30dp">
+            </com.github.mikephil.charting.charts.LineChart>
 
         </LinearLayout>
 
