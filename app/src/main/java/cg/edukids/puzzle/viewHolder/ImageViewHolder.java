@@ -11,11 +11,14 @@ import cg.edukids.drawing.interfaceImage.ImageOnClick;
 
 public class ImageViewHolder extends RecyclerView.ViewHolder{
 
+
     public ImageView imageView;
     private ImageOnClick imageOnClick;
 
     public void setImageOnClick(ImageOnClick imageOnClick) {
         this.imageOnClick = imageOnClick;
+        System.out.println("imageHolder");
+
     }
 
     public ImageViewHolder(@NonNull View itemView) {
@@ -26,6 +29,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder{
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 imageOnClick.onClick(getAdapterPosition());
             }
         });

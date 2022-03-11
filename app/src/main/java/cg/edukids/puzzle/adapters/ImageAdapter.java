@@ -2,13 +2,22 @@ package cg.edukids.puzzle.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +32,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
 
     private Context mcontext;
     private List<Integer> listImages;
+    public static int getSelectPicture;
+
+    public ImageAdapter(){
+
+    }
 
     public ImageAdapter(Context context){
         mcontext = context;
@@ -70,6 +84,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
             @Override
             public void onClick(int pos) {
                 General.PICTURE_SELECTED = listImages.get(pos);
+                System.out.println("Image adapter select picture: " + General.PICTURE_SELECTED);
+                getSelectPicture = General.PICTURE_SELECTED;
                 mcontext.startActivity(new Intent(mcontext, StartPuzzleActivity.class));
             }
         });
@@ -79,4 +95,5 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     public int getItemCount() {
         return listImages.size();
     }
+
 }

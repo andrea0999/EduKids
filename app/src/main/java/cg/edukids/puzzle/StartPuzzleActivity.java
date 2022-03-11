@@ -2,18 +2,25 @@ package cg.edukids.puzzle;
 
 import static java.lang.Math.abs;
 
+import static cg.edukids.puzzle.adapters.ImageAdapter.getSelectPicture;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -24,7 +31,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -32,6 +44,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import cg.edukids.R;
+import cg.edukids.puzzle.adapters.ImageAdapter;
 import cg.edukids.puzzle.puzzlePiece.PuzzlePiece;
 import cg.edukids.puzzle.touchListener.TouchListener;
 
@@ -54,15 +67,21 @@ public class StartPuzzleActivity extends AppCompatActivity {
         layout = findViewById(R.id.layoutRelativePuzzle);
         imageView = findViewById(R.id.grid);
 
-        timerText = findViewById(R.id.timerPuzzle);
+        //timerText = findViewById(R.id.timerPuzzle);
         timer = new Timer();
-        startTimer();
+        //startTimer();
 
         // run image related code after the view was laid out
         // to have all dimensions calculated
         imageView.post(new Runnable() {
+            @SuppressLint("ResourceType")
             @Override
             public void run() {
+
+                ImageAdapter imageAdapter = new ImageAdapter();
+                System.out.println("StartPuzzleActivity selectImage: " + imageAdapter);
+                imageView.setImageResource(getSelectPicture);
+
                 pieces = splitImage();
                 TouchListener touchListener = new TouchListener(StartPuzzleActivity.this);
                 // shuffle pieces order
@@ -80,7 +99,9 @@ public class StartPuzzleActivity extends AppCompatActivity {
             }
         });
     }
-
+    public ImageView getImageView(){
+        return imageView;
+    }
     private void startTimer() {
         timerTask = new TimerTask() {
             @Override
@@ -306,7 +327,12 @@ public class StartPuzzleActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_back,menu);
+        getMenuInflater().inflate(R.menu.menu_timer,menu);
+
+        MenuItem timerItem = menu.findItem(R.id.timerPuzzle);
+        timerText = (TextView) MenuItemCompat.getActionView(timerItem);
+        startTimer();
+
         return true;
     }
     @RequiresApi(api = Build.VERSION_CODES.M)
