@@ -171,5 +171,14 @@
         app:layout_constraintTop_toBottomOf="@+id/googleBtn"
         app:layout_constraintVertical_bias="0.07" />
 
+    <Button
+        android:id="@+id/test2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="586dp"
+        tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,21 +4,28 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.Random;
 
 import cg.edukids.R;
-import cg.edukids.drawing.StartDrawingActivity;
 
-public class StartLudoActivity extends AppCompatActivity implements View.OnClickListener{
+public class StartLudoActivity extends AppCompatActivity implements View.OnClickListener{//, SensorEventListener {
 
     public int height, width, top, bottom, d, n, PlayerNo;
     public int x1 = 1, x2 = 1, x3 = 1, x4 = 1, x5 = 14, x6 = 14, x7 = 14, x8 = 14, x9 = 27, x10 = 27, x11 = 27, x12 = 27, x13 = 40, x14 = 40, x15 = 40, x16 = 40;
@@ -29,6 +36,14 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
     public int r1, r2, r3, r4 = 0, b1, b2, b3, b4 = 0, g1, g2, g3, g4 = 0, y1, y2, y3, y4 = 0;
     public int r, b, g, y = 0;
     public ImageView player1, player2, player3, player4;
+    private int iNumber;
+
+    private SensorManager senSensorManager;
+    private Sensor senAccelerometer;
+
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 600;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +70,54 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         Fill4(yellow3);
         Fill4(yellow4);
         StartGame();
+
+       /* senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);*/
+
     }
+/*
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) { //We will be using this method to detect the shake gesture
+        Sensor mySensor = sensorEvent.sensor;
+
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    RollDice();
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
+    protected void onPause() {
+        super.onPause();
+        senSensorManager.unregisterListener(this);
+    }
+
+    protected void onResume() {
+        super.onResume();
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }*/
 
     public void assignItems() {
 
@@ -91,16 +153,16 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    public void Fill() {
+    public void Fill() { // pozitionare zar
         dice.getLayoutParams().height = 3 * d;
         dice.getLayoutParams().width = 3 * d;
         RelativeLayout.LayoutParams mParams = (RelativeLayout.LayoutParams) dice.getLayoutParams();
         mParams.leftMargin = 6 * d;
-        mParams.topMargin = width + 5 * d;//top + 6 * d
+        mParams.topMargin = width + (-2) * d;//top + 6 * d
         dice.setLayoutParams(mParams);
     }
 
-    public void Fill1(ImageView v) {
+    public void Fill1(ImageView v) { //asezare pioni rosii
 
         switch (v.getId()) {
 
@@ -109,7 +171,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 red1.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams1 = (RelativeLayout.LayoutParams) red1.getLayoutParams();
                 mParams1.leftMargin = 3 * d / 2;
-                mParams1.topMargin = top + 3 * d / 2;
+                mParams1.topMargin = top + 1 * d / 2;
                 red1.setLayoutParams(mParams1);
                 r1 = 0; x1=1;
                 break;
@@ -118,7 +180,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 red2.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams2 = (RelativeLayout.LayoutParams) red2.getLayoutParams();
                 mParams2.leftMargin = 2 * d + 3 * d / 2;
-                mParams2.topMargin = top + 3 * d / 2;
+                mParams2.topMargin = top + 1 * d / 2;
                 red2.setLayoutParams(mParams2);
                 r2 = 0; x2=1;
                 break;
@@ -127,7 +189,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 red3.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams3 = (RelativeLayout.LayoutParams) red3.getLayoutParams();
                 mParams3.leftMargin = 3 * d / 2;
-                mParams3.topMargin = 2 * d + top + 3 * d / 2;
+                mParams3.topMargin = 2 * d + top + 1 * d / 2;
                 red3.setLayoutParams(mParams3);
                 r3 = 0; x3=1;
                 break;
@@ -136,7 +198,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 red4.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams4 = (RelativeLayout.LayoutParams) red4.getLayoutParams();
                 mParams4.leftMargin = 2 * d + 3 * d / 2;
-                mParams4.topMargin = 2 * d + top + 3 * d / 2;
+                mParams4.topMargin = 2 * d + top + 1 * d / 2;
                 red4.setLayoutParams(mParams4);
                 r4 = 0; x4=1;
                 break;
@@ -144,7 +206,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
     }
 
-    public void Fill2(ImageView v) {
+    public void Fill2(ImageView v) { //asezare pioni verzi
 
         switch (v.getId()) {
 
@@ -153,7 +215,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 green1.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams1 = (RelativeLayout.LayoutParams) green1.getLayoutParams();
                 mParams1.leftMargin = 9 * d + 3 * d / 2;
-                mParams1.topMargin = top + 3 * d / 2;
+                mParams1.topMargin = top + 1 * d / 2;
                 green1.setLayoutParams(mParams1);
                 g1 = 0;x5=14;
                 break;
@@ -162,7 +224,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 green2.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams2 = (RelativeLayout.LayoutParams) green2.getLayoutParams();
                 mParams2.leftMargin = 11 * d + 3 * d / 2;
-                mParams2.topMargin = top + 3 * d / 2;
+                mParams2.topMargin = top + 1 * d / 2;
                 green2.setLayoutParams(mParams2);
                 g2 = 0;x6=14;
                 break;
@@ -171,7 +233,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 green3.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams3 = (RelativeLayout.LayoutParams) green3.getLayoutParams();
                 mParams3.leftMargin = 9 * d + 3 * d / 2;
-                mParams3.topMargin = 2 * d + top + 3 * d / 2;
+                mParams3.topMargin = 2 * d + top + 1 * d / 2;
                 green3.setLayoutParams(mParams3);
                 g3 = 0;x7=14;
                 break;
@@ -180,14 +242,14 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 green4.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams4 = (RelativeLayout.LayoutParams) green4.getLayoutParams();
                 mParams4.leftMargin = 11 * d + 3 * d / 2;
-                mParams4.topMargin = 2 * d + top + 3 * d / 2;
+                mParams4.topMargin = 2 * d + top + 1 * d / 2;
                 green4.setLayoutParams(mParams4);
                 g4 = 0;x8=14;
                 break;
         }
     }
 
-    public void Fill3(ImageView v) {
+    public void Fill3(ImageView v) { //asezare pioni albastri
 
         switch (v.getId()) {
 
@@ -196,7 +258,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 blue1.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams1 = (RelativeLayout.LayoutParams) blue1.getLayoutParams();
                 mParams1.leftMargin = 9 * d + 3 * d / 2;
-                mParams1.topMargin = 9 * d + top + 3 * d / 2;
+                mParams1.topMargin = 9 * d + top + 1 * d / 2;
                 blue1.setLayoutParams(mParams1);
                 b1 = 0;x9=27;
                 break;
@@ -205,7 +267,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 blue2.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams2 = (RelativeLayout.LayoutParams) blue2.getLayoutParams();
                 mParams2.leftMargin = 11 * d + 3 * d / 2;
-                mParams2.topMargin = 9 * d + top + 3 * d / 2;
+                mParams2.topMargin = 9 * d + top + 1 * d / 2;
                 blue2.setLayoutParams(mParams2);
                 b2 = 0;x10=27;
                 break;
@@ -214,7 +276,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 blue3.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams3 = (RelativeLayout.LayoutParams) blue3.getLayoutParams();
                 mParams3.leftMargin = 9 * d + 3 * d / 2;
-                mParams3.topMargin = 11 * d + top + 3 * d / 2;
+                mParams3.topMargin = 11 * d + top + 1 * d / 2;
                 blue3.setLayoutParams(mParams3);
                 b3 = 0;x11=27;
                 break;
@@ -223,14 +285,14 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 blue4.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams4 = (RelativeLayout.LayoutParams) blue4.getLayoutParams();
                 mParams4.leftMargin = 11 * d + 3 * d / 2;
-                mParams4.topMargin = 11 * d + top + 3 * d / 2;
+                mParams4.topMargin = 11 * d + top + 1 * d / 2;
                 blue4.setLayoutParams(mParams4);
                 b4 = 0;x12=27;
                 break;
         }
     }
 
-    public void Fill4(ImageView v) {
+    public void Fill4(ImageView v) { //asezare pioni galbeni
 
         switch (v.getId()) {
             case R.id.ivYellow1:
@@ -238,7 +300,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 yellow1.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams1 = (RelativeLayout.LayoutParams) yellow1.getLayoutParams();
                 mParams1.leftMargin = 3 * d / 2;
-                mParams1.topMargin = 9 * d + top + 3 * d / 2;
+                mParams1.topMargin = 9 * d + top + 1 * d / 2;
                 yellow1.setLayoutParams(mParams1);
                 y1 = 0;x13=40;
                 break;
@@ -247,7 +309,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 yellow2.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams2 = (RelativeLayout.LayoutParams) yellow2.getLayoutParams();
                 mParams2.leftMargin = 2 * d + 3 * d / 2;
-                mParams2.topMargin = 9 * d + top + 3 * d / 2;
+                mParams2.topMargin = 9 * d + top + 1 * d / 2;
                 yellow2.setLayoutParams(mParams2);
                 y2 = 0;x14=40;
                 break;
@@ -256,7 +318,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 yellow3.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams3 = (RelativeLayout.LayoutParams) yellow3.getLayoutParams();
                 mParams3.leftMargin = 3 * d / 2;
-                mParams3.topMargin = 11 * d + top + 3 * d / 2;
+                mParams3.topMargin = 11 * d + top + 1 * d / 2;
                 yellow3.setLayoutParams(mParams3);
                 y3 = 0;x15=40;
                 break;
@@ -265,7 +327,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 yellow4.getLayoutParams().width = d;
                 RelativeLayout.LayoutParams mParams4 = (RelativeLayout.LayoutParams) yellow4.getLayoutParams();
                 mParams4.leftMargin = 2 * d + 3 * d / 2;
-                mParams4.topMargin = 11 * d + top + 3 * d / 2;
+                mParams4.topMargin = 11 * d + top + 1 * d / 2;
                 yellow4.setLayoutParams(mParams4);
                 y4 = 0;x16=40;
                 break;
@@ -472,9 +534,9 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.ivDice:
-                n = GenerateRandom();
-                RollDice(n);
-//                Toast.makeText(getApplicationContext(), n + "was obtained", Toast.LENGTH_SHORT).show();
+                iNumber = GenerateRandom();
+                RollDice(iNumber);
+                Toast.makeText(getApplicationContext(), iNumber + "was obtained", Toast.LENGTH_SHORT).show();
                 int pt = PlayerNo;
                 SetClickableFalse();
                 dice.setClickable(false);
@@ -491,22 +553,22 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     if (r4 == 1) {
                         red4.setOnClickListener(this);
                     }
-                    if (n == 6) {//1
+                    if (iNumber == 6) {//1
                         r = 1;
                         red1.setOnClickListener(this);
                         red2.setOnClickListener(this);
                         red3.setOnClickListener(this);
                         red4.setOnClickListener(this);
-//                    } else if (n == 6 && r == 0) {
-//                        PlayerNo++;
-                    } else if (n == 2 || n == 3 || n == 4 || n == 5) {
+                    } else if (iNumber == 6 && r == 0) {
+                        PlayerNo++;
+                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
 
-                    n1 = x1 - 51 + n;
-                    n2 = x2 - 51 + n;
-                    n3 = x3 - 51 + n;
-                    n4 = x4 - 51 + n;
+                    n1 = x1 - 51 + iNumber;
+                    n2 = x2 - 51 + iNumber;
+                    n3 = x3 - 51 + iNumber;
+                    n4 = x4 - 51 + iNumber;
                     if (n1 == 6) {
                         red1.setVisibility(View.INVISIBLE);
                         x1 = 0;
@@ -555,22 +617,22 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     if (g4 == 1) {
                         green4.setOnClickListener(this);
                     }
-                    if (n == 6) {
+                    if (iNumber == 6) {
                         g = 1;
                         green1.setOnClickListener(this);
                         green2.setOnClickListener(this);
                         green3.setOnClickListener(this);
                         green4.setOnClickListener(this);
-//                    } else if (n == 6 && g == 0) {
-//                        PlayerNo++;
-                    } else if (n == 2 || n == 3 || n == 4 || n == 5) {
+                    } else if (iNumber == 6 && g == 0) {
+                        PlayerNo++;
+                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
 
-                    n1 = n + x5 - 12;
-                    n2 = n + x6 - 12;
-                    n3 = n + x7 - 12;
-                    n4 = n + x8 - 12;
+                    n1 = iNumber + x5 - 12;
+                    n2 = iNumber + x6 - 12;
+                    n3 = iNumber + x7 - 12;
+                    n4 = iNumber + x8 - 12;
                     if (n1 == 6 && green1.getTop() < top + 7 * d && green1.getLeft() == 7 * d) {
                         green1.setVisibility(View.INVISIBLE);
                         x5 = 0;
@@ -620,21 +682,21 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     if (b4 == 1) {
                         blue4.setOnClickListener(this);
                     }
-                    if (n == 6) {
+                    if (iNumber == 6) {
                         b = 1;
                         blue1.setOnClickListener(this);
                         blue2.setOnClickListener(this);
                         blue3.setOnClickListener(this);
                         blue4.setOnClickListener(this);
-//                    } else if (n == 6 && b == 0) {
-//                        PlayerNo++;
-                    } else if (n == 2 || n == 3 || n == 4 || n == 5) {
+                    } else if (iNumber == 6 && b == 0) {
+                        PlayerNo++;
+                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
-                    n1 = n + x9 - 25;
-                    n2 = n + x10 - 25;
-                    n3 = n + x11 - 25;
-                    n4 = n + x12 - 25;
+                    n1 = iNumber + x9 - 25;
+                    n2 = iNumber + x10 - 25;
+                    n3 = iNumber + x11 - 25;
+                    n4 = iNumber + x12 - 25;
                     if (n1 == 6 && blue1.getLeft() > 7 * d && blue1.getTop() == top + 7 * d) {
                         blue1.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
@@ -684,21 +746,21 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     if (y4 == 1) {
                         yellow4.setOnClickListener(this);
                     }
-                    if (n == 6) {
+                    if (iNumber == 6) {
                         y = 1;
                         yellow1.setOnClickListener(this);
                         yellow2.setOnClickListener(this);
                         yellow3.setOnClickListener(this);
                         yellow4.setOnClickListener(this);
-//                    } else if (n == 6 && y == 0) {
-//                        PlayerNo++;
-                    } else if (n == 2 || n == 3 || n == 4 || n == 5) {
+                    } else if (iNumber == 6 && y == 0) {
+                            PlayerNo++;
+                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
-                    n1 = n + x13 - 38;
-                    n2 = n + x14 - 38;
-                    n3 = n + x15 - 38;
-                    n4 = n + x16 - 38;
+                    n1 = iNumber + x13 - 38;
+                    n2 = iNumber + x14 - 38;
+                    n3 = iNumber + x15 - 38;
+                    n4 = iNumber + x16 - 38;
                     if (n1 == 6 && yellow1.getTop() > top + 6 * d && yellow1.getLeft() == 7 * d) {
                         yellow1.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
@@ -738,6 +800,8 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 }
 
                 break;
+
+
         }
 
         if (red1.getVisibility()==View.INVISIBLE && red2.getVisibility()==View.INVISIBLE &&
@@ -818,6 +882,28 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void RollDice(int x) {
+        /*Random randNumber = new Random();
+        iNumber = randNumber.nextInt(6) + 1;
+        System.out.println("randomNumber iNumber: " + iNumber);
+        if(iNumber == 1){
+            dice.setImageResource(R.drawable.one);
+        }else if(iNumber == 2){
+            dice.setImageResource(R.drawable.two);
+        }else if(iNumber == 3){
+            dice.setImageResource(R.drawable.three);
+        }else if(iNumber == 4){
+            dice.setImageResource(R.drawable.four);
+        }else if(iNumber == 5){
+            dice.setImageResource(R.drawable.five);
+        }else if(iNumber == 6){
+            dice.setImageResource(R.drawable.six);
+        }
+
+        dice.setVisibility(View.INVISIBLE);
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.move_down_ball_first);
+        dice.setVisibility(View.VISIBLE);
+        dice.clearAnimation();
+        dice.startAnimation(a);*/
         if (x == 1) {
             dice.setImageResource(R.drawable.one);
         }
@@ -845,8 +931,31 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
     public int GenerateRandom() {
         Random randy = new Random();
-        n = randy.nextInt(6) + 1;
-        return n;
+        iNumber = randy.nextInt(6) + 1;
+
+        /*Random randNumber = new Random();
+        int iNumber = randNumber.nextInt(6) + 1;
+        if(iNumber == 1){
+            dice.setImageResource(R.drawable.one);
+        }else if(iNumber == 2){
+            dice.setImageResource(R.drawable.two);
+        }else if(iNumber == 3){
+            dice.setImageResource(R.drawable.three);
+        }else if(iNumber == 4){
+            dice.setImageResource(R.drawable.four);
+        }else if(iNumber == 5){
+            dice.setImageResource(R.drawable.five);
+        }else if(iNumber == 6){
+            dice.setImageResource(R.drawable.six);
+        }
+
+        dice.setVisibility(View.INVISIBLE);
+        Animation a = AnimationUtils.loadAnimation(this, R.anim.move_down_ball_first);
+        dice.setVisibility(View.VISIBLE);
+        dice.clearAnimation();
+        dice.startAnimation(a);*/
+
+        return iNumber;
     }
 
     private int PositionOf(int x, ImageView ivx) {
@@ -854,7 +963,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         SetDiceClickable();
 
         RelativeLayout.LayoutParams mParams = (RelativeLayout.LayoutParams) ivx.getLayoutParams();
-        x = x + n;
+        x = x + iNumber;
         int a = ivx.getId();
         if (a == R.id.ivGreen1 || a == R.id.ivGreen2 || a == R.id.ivGreen3 || a == R.id.ivGreen4
                 || a == R.id.ivBlue1 || a == R.id.ivBlue2 || a == R.id.ivBlue3 || a == R.id.ivBlue4
@@ -872,19 +981,19 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                         break;
                     case 2:
                         mParams.leftMargin = 2 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 9 * d;
                         break;
                     case 3:
                         mParams.leftMargin = 3 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 9 * d;
                         break;
                     case 4:
                         mParams.leftMargin = 4 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 9 * d;
                         break;
                     case 5:
                         mParams.leftMargin = 5 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 9 * d;
                         break;
                 }
                 ivx.setLayoutParams(mParams);

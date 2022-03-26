@@ -6,10 +6,13 @@ import static cg.edukids.puzzle.adapters.ImageAdapter.getSelectPicture;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -23,6 +26,10 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,22 +40,32 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import cg.edukids.R;
+import cg.edukids.memory.StartMemoryEasyActivity;
 import cg.edukids.puzzle.adapters.ImageAdapter;
 import cg.edukids.puzzle.puzzlePiece.PuzzlePiece;
 import cg.edukids.puzzle.touchListener.TouchListener;
 
-public class StartPuzzleActivity extends AppCompatActivity {
+public class StartPuzzleActivity extends AppCompatActivity implements SensorEventListener {
 
     private ImageView imageView;
     private RelativeLayout layout;
@@ -58,11 +75,42 @@ public class StartPuzzleActivity extends AppCompatActivity {
     private TimerTask timerTask;
     private Double time = 0.0;
 
+    private int attention = 0, patience = 0;
+    private int getAttention, getPatience;
+    private Calendar calendar = Calendar.getInstance();;
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");;
+    private String date = dateFormat.format(calendar.getTime());
+
+    private FirebaseDatabase db = FirebaseDatabase.getInstance();
+    private DatabaseReference reff = db.getReference();
+
+    private SensorManager senSensorManager = null;
+    private Sensor senAccelerometer;
+
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 600;
+
+    private int ok = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_puzzle);
+
+        AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartPuzzleActivity.this);
+        alertDialog.setTitle("Information")
+                .setMessage("Pentru a aparea piesele amestecate te rog sa scuturi telefonul")
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
 
         layout = findViewById(R.id.layoutRelativePuzzle);
         imageView = findViewById(R.id.grid);
@@ -83,22 +131,71 @@ public class StartPuzzleActivity extends AppCompatActivity {
                 imageView.setImageResource(getSelectPicture);
 
                 pieces = splitImage();
-                TouchListener touchListener = new TouchListener(StartPuzzleActivity.this);
-                // shuffle pieces order
-                Collections.shuffle(pieces);
-                for(PuzzlePiece piece : pieces) {
-                    piece.setOnTouchListener(touchListener);
-
-                    layout.addView(piece);
-                    // randomize position, on the bottom of the screen
-                    RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) piece.getLayoutParams();
-                    lParams.leftMargin = new Random().nextInt(layout.getWidth() - piece.pieceWidth);
-                    lParams.topMargin = layout.getHeight() - piece.pieceHeight;
-                    piece.setLayoutParams(lParams);
-                }
             }
         });
+
+        senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        //senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL)
     }
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) { //We will be using this method to detect the shake gesture
+        Sensor mySensor = sensorEvent.sensor;
+
+        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = sensorEvent.values[0];
+            float y = sensorEvent.values[1];
+            float z = sensorEvent.values[2];
+
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD && ok != 1) {
+                    ok = 1;
+                    startTimer();
+                    TouchListener touchListener = new TouchListener(StartPuzzleActivity.this);
+                    // shuffle pieces order
+                    Collections.shuffle(pieces);
+                    for(PuzzlePiece piece : pieces) {
+                        piece.setOnTouchListener(touchListener);
+
+                        if(piece.getParent() != null) {
+                            ((ViewGroup)piece.getParent()).removeView(piece); // <- fix
+                        }
+
+                        layout.addView(piece);
+                        // randomize position, on the bottom of the screen
+                        RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) piece.getLayoutParams();
+                        lParams.leftMargin = new Random().nextInt(layout.getWidth() - piece.pieceWidth);
+                        lParams.topMargin = layout.getHeight() - piece.pieceHeight;
+                        piece.setLayoutParams(lParams);
+                    }
+                }
+                last_x = x;
+                last_y = y;
+                last_z = z;
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+    protected void onStop(){
+        super.onStop();
+        senSensorManager.unregisterListener(this);
+    }
+    protected void onResume() {
+        super.onResume();
+        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
     public ImageView getImageView(){
         return imageView;
     }
@@ -311,7 +408,84 @@ public class StartPuzzleActivity extends AppCompatActivity {
 
     public void checkGameOver() {
         if (isGameOver()) {
-            finish();
+            //finish();
+
+            String getTimer = (String) timerText.getText();
+            System.out.println(getTimer);
+            String seconds = getTimer.substring(10,12);
+            System.out.println(seconds);
+            int sec = Integer.parseInt(seconds);
+            System.out.println(sec);
+
+            String minute = getTimer.substring(5,7);
+            int min = Integer.parseInt(minute);
+
+            if( sec <= 30){
+                attention = 5;
+                patience = 5;
+            }else if(sec > 30 && sec <= 59){
+                attention = 3;
+                patience = 3;
+            }else {
+                attention = 1;
+                patience = 1;
+            }
+
+            FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            String x = date.substring(0,2);
+            String y = date.substring(3,5);
+            String z = date.substring(6,10);
+            System.out.println(x + " " + y + " " + z);
+            String total = x + y + z;
+
+            reff.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    getAttention = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child(total).child("attention").getValue(Integer.class);
+                    getPatience = dataSnapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("Scor").child(total).child("patience").getValue(Integer.class);
+                    System.out.println("getAttention: " + getAttention);
+
+                    if(getAttention < attention){
+                        System.out.println("if condition");
+                        reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("attention").setValue(attention);
+                    }
+                    if(getPatience < patience){
+                        reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("patience").setValue(patience);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    System.out.println("The read failed: " + databaseError.getCode());
+                }
+            });
+
+            System.out.println("date: "+ date);
+
+
+            AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartPuzzleActivity.this);
+            alertDialog.setTitle("Congratulations, great job!")
+                    .setMessage("Attention: " + attention +
+                            "\nPatience: " + patience)
+                    .setCancelable(false)
+                    .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getApplicationContext(), StartPuzzleActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    });
+
+            AlertDialog dialog = alertDialog.create();
+            dialog.show();
+
         }
     }
 
@@ -331,7 +505,7 @@ public class StartPuzzleActivity extends AppCompatActivity {
 
         MenuItem timerItem = menu.findItem(R.id.timerPuzzle);
         timerText = (TextView) MenuItemCompat.getActionView(timerItem);
-        startTimer();
+        //startTimer();
 
         return true;
     }

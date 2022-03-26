@@ -49,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        test = findViewById(R.id.test2);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),TestActivity.class));
+            }
+        });
+
         facebookBtn = findViewById(R.id.facebookBtn);
         facebookBtn.setOnClickListener(new View.OnClickListener() {
             @Override

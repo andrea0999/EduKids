@@ -34,6 +34,7 @@ public class TouchListener implements View.OnTouchListener {
         }
 
         RelativeLayout.LayoutParams lParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
+        System.out.println("touchListener: lParams: " + lParams + " margin: "+ lParams.leftMargin + " "+ lParams.topMargin);
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 xDelta = x - lParams.leftMargin;

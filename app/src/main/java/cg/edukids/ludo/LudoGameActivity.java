@@ -11,6 +11,7 @@ import cg.edukids.HomeActivity;
 import cg.edukids.R;
 import cg.edukids.profile.ProfileActivity;
 import cg.edukids.puzzle.PuzzleActivity;
+import cg.edukids.snakes.GameManager;
 
 public class LudoGameActivity extends AppCompatActivity {
 
@@ -41,7 +42,7 @@ public class LudoGameActivity extends AppCompatActivity {
         ludoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), SelectPlayerActivity.class));
+                startActivity(new Intent(getApplicationContext(), SelectPlayerActivity.class)); //GameManager.class));
             }
         });
 

@@ -12,18 +12,23 @@
     <color name="gris_dark">#C0BFC0</color>
     <color name="item_toolbar">#171616</color>
     <color name="red">#ff0000</color>
+    <color name="orange">#FF9900</color>
+    <color name="purple">#660066</color>
+    <color name="brown">#8B4513</color>
 
     <array name="colorsPalett">
-        <item>@color/colorAccent</item>
-        <item>@color/colorPrimaryDark</item>
-        <item>@color/gris_light</item>
-        <item>@color/colorPrimary</item>
-        <item>@color/blue</item>
         <item>@color/item_toolbar</item>
         <item>@color/gris_dark</item>
-        <item>@color/orange_light</item>
+        <item>@color/gris_light</item>
         <item>@color/red</item>
-
+        <item>@color/orange</item>
+        <item>@color/orange_light</item>
+        <item>@color/colorAccent</item>
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/colorPrimary</item>
+        <item>@color/blue</item>
+        <item>@color/purple</item>
+        <item>@color/brown</item>
     </array>
 
 </resources>
