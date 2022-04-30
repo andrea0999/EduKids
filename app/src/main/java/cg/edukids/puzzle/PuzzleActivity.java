@@ -52,5 +52,6 @@ public class PuzzleActivity extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
             }
         });
+
     }
 }

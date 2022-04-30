@@ -2,6 +2,7 @@ package cg.edukids.puzzle;
 
 import static java.lang.Math.abs;
 
+import static cg.edukids.puzzle.PuzzleListActivity.numberOfPieces;
 import static cg.edukids.puzzle.adapters.ImageAdapter.getSelectPicture;
 
 import androidx.annotation.NonNull;
@@ -122,6 +123,7 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
         // run image related code after the view was laid out
         // to have all dimensions calculated
         imageView.post(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @SuppressLint("ResourceType")
             @Override
             public void run() {
@@ -131,12 +133,13 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
                 imageView.setImageResource(getSelectPicture);
 
                 pieces = splitImage();
+                System.out.println("StartPuzzleActivity pieces: " + pieces + "" + pieces.get(1).getBackground());
             }
         });
 
         senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        //senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL)
+        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);
     }
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) { //We will be using this method to detect the shake gesture
@@ -163,7 +166,7 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
                     Collections.shuffle(pieces);
                     for(PuzzlePiece piece : pieces) {
                         piece.setOnTouchListener(touchListener);
-
+                        System.out.println("piece: " + piece.getBackground());
                         if(piece.getParent() != null) {
                             ((ViewGroup)piece.getParent()).removeView(piece); // <- fix
                         }
@@ -230,9 +233,20 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
     }
 
     private ArrayList<PuzzlePiece> splitImage() {
-        int piecesNumber = 12;
-        int rows = 4;
-        int cols = 3;
+        int piecesNumber = numberOfPieces;
+        int rows = 0, cols = 0;
+        System.out.println("startPuzzle piecesNumber: " + piecesNumber);
+
+        if(piecesNumber == 12) {
+             rows = 4;
+             cols = 3;
+        }else if(piecesNumber == 20){
+             rows = 4;
+             cols = 5;
+        }else if(piecesNumber == 30){
+             rows = 5;
+             cols = 6;
+        }
 
         //ImageView imageView = findViewById(R.id.grid);
         ArrayList<PuzzlePiece> pieces = new ArrayList<>(piecesNumber);
@@ -284,6 +298,7 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
 
                 // this bitmap will hold our final puzzle piece image
                 Bitmap puzzlePiece = Bitmap.createBitmap(pieceWidth + offsetX, pieceHeight + offsetY, Bitmap.Config.ARGB_8888);
+                System.out.println("puzzlePiece: " + puzzlePiece);
 
                 // draw path
                 int bumpSize = pieceHeight / 4;
@@ -479,6 +494,8 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
                     .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(getApplicationContext(), PuzzleListActivity.class);
+                            startActivity(intent);
                             finish();
                         }
                     });

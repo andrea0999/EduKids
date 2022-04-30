@@ -80,20 +80,15 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) { //We will be using this method to detect the shake gesture
         Sensor mySensor = sensorEvent.sensor;
-
         if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             float x = sensorEvent.values[0];
             float y = sensorEvent.values[1];
             float z = sensorEvent.values[2];
-
             long curTime = System.currentTimeMillis();
-
             if ((curTime - lastUpdate) > 100) {
                 long diffTime = (curTime - lastUpdate);
                 lastUpdate = curTime;
-
                 float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
-
                 if (speed > SHAKE_THRESHOLD) {
                     RollDice();
                 }
@@ -103,17 +98,13 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
             }
         }
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
-
     protected void onPause() {
         super.onPause();
         senSensorManager.unregisterListener(this);
     }
-
     protected void onResume() {
         super.onResume();
         senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
@@ -753,7 +744,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                         yellow3.setOnClickListener(this);
                         yellow4.setOnClickListener(this);
                     } else if (iNumber == 6 && y == 0) {
-                            PlayerNo++;
+                        PlayerNo++;
                     } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
@@ -898,7 +889,6 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         }else if(iNumber == 6){
             dice.setImageResource(R.drawable.six);
         }
-
         dice.setVisibility(View.INVISIBLE);
         Animation a = AnimationUtils.loadAnimation(this, R.anim.move_down_ball_first);
         dice.setVisibility(View.VISIBLE);
@@ -948,7 +938,6 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         }else if(iNumber == 6){
             dice.setImageResource(R.drawable.six);
         }
-
         dice.setVisibility(View.INVISIBLE);
         Animation a = AnimationUtils.loadAnimation(this, R.anim.move_down_ball_first);
         dice.setVisibility(View.VISIBLE);

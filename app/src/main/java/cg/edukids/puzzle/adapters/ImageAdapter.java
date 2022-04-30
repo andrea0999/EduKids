@@ -1,31 +1,28 @@
 package cg.edukids.puzzle.adapters;
 
+import static cg.edukids.puzzle.PuzzleListActivity.choose;
+
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Rect;
-import android.os.AsyncTask;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import cg.edukids.R;
 import cg.edukids.drawing.general.General;
 import cg.edukids.drawing.interfaceImage.ImageOnClick;
+import cg.edukids.puzzle.Start2DActivity;
 import cg.edukids.puzzle.StartPuzzleActivity;
 import cg.edukids.puzzle.viewHolder.ImageViewHolder;
 
@@ -35,6 +32,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     private Context mcontext;
     private List<Integer> listImages;
     public static int getSelectPicture;
+    public static Bitmap get2dPicture;
 
     public ImageAdapter(){
 
@@ -71,6 +69,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
         return results;
     }
 
+
     @NonNull
     @Override
     public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -89,6 +88,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
                 System.out.println("Image adapter select picture: " + General.PICTURE_SELECTED);
                 getSelectPicture = General.PICTURE_SELECTED;
                 mcontext.startActivity(new Intent(mcontext, StartPuzzleActivity.class));
+                if(choose != null){
+                    if(choose.equals("Different: 2D")) {
+                        choose = "Puzzle option…";
+                        System.out.println("ImageAdapter 2D");
+                        mcontext.startActivity(new Intent(mcontext, Start2DActivity.class));
+                    }
+                }else {
+                    System.out.println("ImageAdapter normal");
+                    mcontext.startActivity(new Intent(mcontext, StartPuzzleActivity.class));
+                }
             }
         });
     }

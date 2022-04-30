@@ -3,4 +3,16 @@
 
     <string name="facebook_app_id">577958786830545</string>
 
+    <string-array name="puzzleOptions">
+        <item>Puzzle option…</item>
+        <item>Normal</item>
+        <item>Different: 2D</item>
+    </string-array>
+
+    <string-array name="numberOfPieces">
+        <item>Number of Pieces</item>
+        <item>12</item>
+        <item>20</item>
+        <item>30</item>
+    </string-array>
 </resources>
