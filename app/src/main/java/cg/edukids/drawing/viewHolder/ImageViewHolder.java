@@ -21,7 +21,7 @@ public class ImageViewHolder extends RecyclerView.ViewHolder {
     public ImageViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        imageView = itemView.findViewById(R.id.image_outline);
+        imageView = itemView.findViewById(R.id.image_item);
 
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override

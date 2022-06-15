@@ -79,6 +79,7 @@ public class CanvasBoardDraw extends View {
         canvas1.drawRect(8, canvasTop + 9 * d + 8, 6 * d - 8, canvasBottom - 8, paintBorder);
         canvas1.drawRect(9 * d + 8, canvasTop + 9 * d + 8, width - 8, canvasBottom - 8, paintBorder);
 
+        //canvas1. drawText("It is the player's turn with the displayed color", canvasTop + 5  ,   d - 10 , paintBorder);
 //Draw Path
         for (int i = 0; i <= 5; i++) {
 

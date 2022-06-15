@@ -422,8 +422,8 @@ public class StartMemoryMediumActivity extends AppCompatActivity {
                 attention = 7;
                 memory = 7;
             }else if( (min == 0 && sec > 45) && (min == 1 && sec <= 15)){
-                attention = 4;
-                memory = 4;
+                attention = 3;
+                memory = 3;
             }else {
                 attention = 1;
                 memory = 1;
@@ -458,28 +458,33 @@ public class StartMemoryMediumActivity extends AppCompatActivity {
                 }
             });
 
-            AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryMediumActivity.this);
-            alertDialog.setTitle("You win, congrats!")
-                    .setMessage("Attention: " + attention +
-                            "\nMemory: " + memory)
-                    .setCancelable(false)
-                    .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getApplicationContext(), StartMemoryMediumActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryMediumActivity.this);
+                    alertDialog.setTitle("You win, congrats!")
+                            .setMessage("Attention: " + attention +
+                                    "\nMemory: " + memory)
+                            .setCancelable(false)
+                            .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), StartMemoryMediumActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
 
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                }
+            }, 500);
 
         }
     }

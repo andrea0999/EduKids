@@ -45,9 +45,6 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
 
     private static final int PERMISION_REQUEST = 10001;
     DrawView drawView;
-    //private String fileShare;
-    //private Bitmap bitmapShare;
-    //private String selectedImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,15 +103,6 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
                 }
             });
 
-            /*builder.setNeutralButton("Save in App", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    System.out.println("save in app");
-                    saveApp();
-                    dialog.dismiss();
-                }
-                    });*/
-
             builder.show();
         }
     }
@@ -128,32 +116,6 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    /*private void saveApp(){
-        SharedPreferences sp = getSharedPreferences(fileShare, MODE_PRIVATE); // Open SharedPreferences with name AppSharedPref
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("ImagePath", selectedImagePath); // Store selectedImagePath with key "ImagePath". This key will be then used to retrieve data.
-        //editor.putString("imagePreferance", encodeToBase64(bitmapShare));
-        //editor.apply();
-        editor.commit();
-
-        startActivity(new Intent(getApplicationContext(),TestActivity.class));
-    }
-    public static String encodeToBase64(Bitmap image) {
-        Bitmap immage = image;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        immage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] b = baos.toByteArray();
-        String imageEncoded = Base64.encodeToString(b, Base64.DEFAULT);
-
-        Log.d("Image Log:", imageEncoded);
-        return imageEncoded;
-    }
-    public String getSelectedImagePath(){
-        return selectedImagePath;
-    }
-    public String getFileShare(){
-        return fileShare;
-    }*/
 
     private void save() {
 
@@ -210,7 +172,7 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
         ColorPickerDialogBuilder.with(this)
                 .initialColor(General.COLOR_SELECTED)
                 .setTitle("Select Color")
-                .density(12)
+                .density(15)
                 .wheelType(ColorPickerView.WHEEL_TYPE.FLOWER)
                 .setPositiveButton("OK", new ColorPickerClickListener() {
                     @Override
@@ -218,7 +180,7 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
                         General.COLOR_SELECTED = lastSelectedColor;
                     }
                 })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface d, int i) {
                         d.dismiss();

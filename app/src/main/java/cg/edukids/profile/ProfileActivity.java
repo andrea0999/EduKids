@@ -381,7 +381,6 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void cropImage(Uri sourceUri) {
-        //Uri destinationUri = Uri.fromFile(new File(getCacheDir(), queryName(getContentResolver(), sourceUri)));
         UCrop.Options options = new UCrop.Options();
         options.setCompressionQuality(IMAGE_COMPRESSION);
 

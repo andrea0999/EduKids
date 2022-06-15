@@ -33,6 +33,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -78,7 +79,7 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
 
     private int attention = 0, patience = 0;
     private int getAttention, getPatience;
-    private Calendar calendar = Calendar.getInstance();;
+    private Calendar calendar = Calendar.getInstance();
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");;
     private String date = dateFormat.format(calendar.getTime());
 
@@ -101,7 +102,7 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
 
         AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartPuzzleActivity.this);
         alertDialog.setTitle("Information")
-                .setMessage("Pentru a aparea piesele amestecate te rog sa scuturi telefonul")
+                .setMessage("Shake the phone to make the puzzle pieces appear")
                 .setCancelable(false)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -425,6 +426,7 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
         if (isGameOver()) {
             //finish();
 
+            timerTask.cancel();
             String getTimer = (String) timerText.getText();
             System.out.println(getTimer);
             String seconds = getTimer.substring(10,12);
@@ -435,16 +437,41 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
             String minute = getTimer.substring(5,7);
             int min = Integer.parseInt(minute);
 
-            if( sec <= 30){
-                attention = 5;
-                patience = 5;
-            }else if(sec > 30 && sec <= 59){
-                attention = 3;
-                patience = 3;
-            }else {
-                attention = 1;
-                patience = 1;
+            if(numberOfPieces == 12){
+                if( sec <= 59 && min == 0){
+                    attention = 5;
+                    patience = 5;
+                }else if(min == 1 && sec <= 30){
+                    attention = 3;
+                    patience = 3;
+                }else {
+                    attention = 1;
+                    patience = 1;
+                }
+            }else if( numberOfPieces == 20){
+                if( sec <= 30 && min <= 2){
+                    attention = 7;
+                    patience = 7;
+                }else if( (min >= 2 && sec > 30) && (min <= 5 && sec == 0)){
+                    attention = 3;
+                    patience = 3;
+                }else {
+                    attention = 1;
+                    patience = 1;
+                }
+            }else if(numberOfPieces == 30){
+                if( (sec == 0 && min <= 7) ){
+                    attention = 10;
+                    patience = 10;
+                }else if( (min >= 7 && sec > 0) && (min <= 10 && sec == 0)){
+                    attention = 7;
+                    patience = 7;
+                }else {
+                    attention = 1;
+                    patience = 1;
+                }
             }
+
 
             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             String x = date.substring(0,2);
@@ -477,31 +504,35 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
 
             System.out.println("date: "+ date);
 
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartPuzzleActivity.this);
+                    alertDialog.setTitle("Congratulations, great job!")
+                            .setMessage("Attention: " + attention +
+                                    "\nPatience: " + patience)
+                            .setCancelable(false)
+                            .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), StartPuzzleActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), PuzzleListActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            });
 
-            AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartPuzzleActivity.this);
-            alertDialog.setTitle("Congratulations, great job!")
-                    .setMessage("Attention: " + attention +
-                            "\nPatience: " + patience)
-                    .setCancelable(false)
-                    .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getApplicationContext(), StartPuzzleActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getApplicationContext(), PuzzleListActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
-
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                }
+            }, 1500);
 
         }
     }
@@ -521,7 +552,9 @@ public class StartPuzzleActivity extends AppCompatActivity implements SensorEven
         getMenuInflater().inflate(R.menu.menu_timer,menu);
 
         MenuItem timerItem = menu.findItem(R.id.timerPuzzle);
+        System.out.println("timerItem P: " + timerItem);
         timerText = (TextView) MenuItemCompat.getActionView(timerItem);
+        System.out.println("timerText P: " + timerText);
         //startTimer();
 
         return true;

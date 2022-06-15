@@ -8,7 +8,7 @@
     android:gravity="center">
 
     <ImageView
-        android:id="@+id/image_outline"
+        android:id="@+id/image_item"
         android:layout_width="match_parent"
         android:layout_height="250sp"
         android:layout_weight="1"

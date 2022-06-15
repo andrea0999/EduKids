@@ -104,12 +104,12 @@ public class  DrawView extends View {
                 paint((int)((refX - mPositionX)/mScaleFactor), (int)((refY - mPositionY)/mScaleFactor));
                 break;
             case MotionEvent.ACTION_MOVE:
-                float nX = event.getX();
-                float nY = event.getY();
-                mPositionX += nX - refX;
-                mPositionY += nY - refY;
-                refX = nX;
-                refY = nY;
+                float getX = event.getX();
+                float getY = event.getY();
+                mPositionX += getX - refX;
+                mPositionY += getY - refY;
+                refX = getX;
+                refY = getY;
 
                 invalidate();
         } // folosit pentru Zoom

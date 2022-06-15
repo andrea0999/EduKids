@@ -12,18 +12,17 @@ import android.view.MenuItem;
 import android.view.View;
 
 import cg.edukids.R;
-import cg.edukids.drawing.StartDrawingActivity;
 
-public class SelectPlayerActivity extends AppCompatActivity {
+public class StartGameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_player);
+        setContentView(R.layout.activity_start_game);
     }
 
     public void StartGame(View view) {
-        Intent i = new Intent(SelectPlayerActivity.this, StartLudoActivity.class);
+        Intent i = new Intent(StartGameActivity.this, StartLudoActivity.class);
         startActivity(i);
     }
 

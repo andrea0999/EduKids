@@ -13,9 +13,9 @@ public class GestureDetectGridView extends GridView {
     private float mTouchX;
     private float mTouchY;
 
-    private static final int SWIPE_MIN_DISTANCE = 100;
-    private static final int SWIPE_MAX_OFF_PATH = 100;
-    private static final int SWIPE_THRESHOLD_VELOCITY = 100;
+    private  final int SWIPE_MIN_DISTANCE = 100;
+    private  final int SWIPE_MAX_OFF_PATH = 100;
+    private  final int SWIPE_THRESHOLD_VELOCITY = 100;
 
     public GestureDetectGridView(Context context) {
         super(context);
@@ -33,6 +33,7 @@ public class GestureDetectGridView extends GridView {
     }
 
     private void init(final Context context) {
+        Start2DActivity start2DActivity = new Start2DActivity();
         gDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDown(MotionEvent event) {
@@ -51,18 +52,18 @@ public class GestureDetectGridView extends GridView {
                         return false;
                     }
                     if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE) {
-                        Start2DActivity.moveTiles(context, Start2DActivity.up, position);
+                        start2DActivity.moveTiles(context, Start2DActivity.up, position);
                     } else if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE) {
-                        Start2DActivity.moveTiles(context, Start2DActivity.down, position);
+                        start2DActivity.moveTiles(context, Start2DActivity.down, position);
                     }
                 } else {
                     if (Math.abs(velocityX) < SWIPE_THRESHOLD_VELOCITY) {
                         return false;
                     }
                     if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE) {
-                        Start2DActivity.moveTiles(context, Start2DActivity.left, position);
+                        start2DActivity.moveTiles(context, Start2DActivity.left, position);
                     } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE) {
-                        Start2DActivity.moveTiles(context, Start2DActivity.right, position);
+                        start2DActivity.moveTiles(context, Start2DActivity.right, position);
                     }
                 }
 

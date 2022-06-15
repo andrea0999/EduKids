@@ -91,8 +91,17 @@ public class PuzzleListActivity extends AppCompatActivity {
                         System.out.println("choose: " + choose);
 
                     }
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(PuzzleListActivity.this, "Please choose a valid option", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), PuzzleListActivity.class);
+                    startActivity(intent);
                 }
-                dialog.dismiss();
+                /*if(spinner.getSelectedItem().toString().equalsIgnoreCase("Puzzle option…")
+                        && spinner1.getSelectedItem().toString().equalsIgnoreCase("Number of Pieces")){
+                    Toast.makeText(PuzzleListActivity.this, "Please choose a valid option", Toast.LENGTH_SHORT).show();
+                }*/
+
             }
         })
             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

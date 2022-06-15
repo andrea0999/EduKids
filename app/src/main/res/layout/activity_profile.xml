@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="#FFECD5"
     android:fillViewport="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -51,13 +51,14 @@
                     android:src="@drawable/circlebtn"
                     app:civ_border_color="@android:color/black"
                     app:civ_border_width="1dp"
-                    android:id="@+id/profileImage"/>
+                    android:id="@+id/profileImage"
+                    android:background="@drawable/circlebtn"/>
 
                 <TextView
                     android:id="@+id/changeProfileBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="32dp"
-                    android:layout_marginLeft="-105dp"
+                    android:layout_marginLeft="-96dp"
                     android:layout_marginTop="128dp"
                     android:text="Change Image"
                     android:textAlignment="center"
@@ -75,6 +76,7 @@
                         android:layout_marginLeft="85dp"
                         android:layout_marginTop="25dp"
                         android:layout_weight="10"
+                        android:background="@color/white"
                         android:text="LogOut"
                         android:textAlignment="center" />
 
@@ -88,7 +90,8 @@
                         android:drawableLeft="@drawable/icons8_delete"
                         android:text="Delete account"
                         android:textAlignment="center"
-                        android:textSize="12dp" />
+                        android:textSize="12dp"
+                        android:background="@color/white"/>
                 </LinearLayout>
 
                 <ProgressBar

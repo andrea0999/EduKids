@@ -74,7 +74,6 @@ public class HomeActivity extends AppCompatActivity {
         String total = x + y + z;
         System.out.println(total);
 
-        //reff.child(currentFirebaseUser.getUid()).child();
         reff.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

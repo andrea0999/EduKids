@@ -29,19 +29,7 @@
         <activity
             android:name=".puzzle.Start2DActivity"
             android:exported="false" />
-        <activity
-            android:name=".TestActivity"
-            android:exported="false" />
-        <activity
-            android:name=".snakes.GamePanel"
-            android:exported="false"
-            tools:ignore="Instantiatable" />
-        <activity
-            android:name=".snakes.GameManager"
-            android:exported="false" />
-        <activity
-            android:name=".drawing.TestActivity"
-            android:exported="false" /> <!-- uCrop cropping activity -->
+        <!-- uCrop cropping activity -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -74,7 +62,7 @@
             android:name=".ludo.BluePlayerActivity"
             android:exported="false" />
         <activity
-            android:name=".ludo.SelectPlayerActivity"
+            android:name=".ludo.StartGameActivity"
             android:exported="false" />
         <activity
             android:name=".ludo.LudoGameActivity"
@@ -125,7 +113,7 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:value="@string/facebook_app_id"/>
 
         <receiver
             android:name=".MemoBroadcast"

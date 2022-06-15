@@ -381,29 +381,34 @@ public class StartMemoryEasyActivity extends AppCompatActivity {
 
             System.out.println("date: "+ date);
 
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryEasyActivity.this);
+                    alertDialog.setTitle("You win, congrats!")
+                            .setMessage("Attention: " + attention +
+                                    "\nMemory: " + memory)
+                            .setCancelable(false)
+                            .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent = new Intent(getApplicationContext(), StartMemoryEasyActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
 
-            AlertDialog.Builder alertDialog =  new AlertDialog.Builder(StartMemoryEasyActivity.this);
-            alertDialog.setTitle("You win, congrats!")
-                    .setMessage("Attention: " + attention +
-                                "\nMemory: " + memory)
-                    .setCancelable(false)
-                    .setPositiveButton("Start new game", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(getApplicationContext(), StartMemoryEasyActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("Exit", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
-                        }
-                    });
+                    AlertDialog dialog = alertDialog.create();
+                    dialog.show();
+                }
+            }, 500);
 
-            AlertDialog dialog = alertDialog.create();
-            dialog.show();
 
         }
     }

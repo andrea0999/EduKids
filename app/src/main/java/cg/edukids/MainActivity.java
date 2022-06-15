@@ -38,24 +38,13 @@ public class MainActivity extends AppCompatActivity {
     private Button loginBtn, registerBtn;
     private TextView resetLink;
     ImageButton facebookBtn, googleBtn;
-    //private TextView lcreateBtn;
     FirebaseAuth firebaseAuth;
-
-    Button test;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        test = findViewById(R.id.test2);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),TestActivity.class));
-            }
-        });
 
         facebookBtn = findViewById(R.id.facebookBtn);
         facebookBtn.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
         lemailLogin = findViewById(R.id.emailLogin);
         lpasswordLogin = findViewById(R.id.passwordLogin);
-        //lcreateBtn = findViewById(R.id.createBtn);
 
         loginBtn = findViewById(R.id.loginBtn);
 

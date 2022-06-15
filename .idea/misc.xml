@@ -37,7 +37,7 @@
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_game_panel.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_google.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_green_player.xml" value="0.25416666666666665" />
-        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_home.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_home.xml" value="0.2" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_image_picker.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_ludo_game.xml" value="0.19791666666666666" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_main.xml" value="0.264" />
@@ -51,9 +51,11 @@
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_select_player.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start2_dactivity.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_drawing.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_game.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_ludo.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_memory.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_memory_easy.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_memory_hard.xml" value="0.19293478260869565" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_memory_medium.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_start_puzzle.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/layout/activity_test.xml" value="0.25226449275362317" />
@@ -65,6 +67,7 @@
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/menu/menu.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/menu/menu_back.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/menu/menu_timer.xml" value="0.25416666666666665" />
+        <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/menu/menu_timer2d.xml" value="0.25416666666666665" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.10677083333333333" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.18854166666666666" />
         <entry key="..\:/Faculta/AN_IV/licenta/proiect/app/src/main/res/xml/file_paths.xml" value="0.17604166666666668" />

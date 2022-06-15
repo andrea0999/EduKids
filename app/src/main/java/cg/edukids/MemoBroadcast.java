@@ -23,7 +23,7 @@ public class MemoBroadcast extends BroadcastReceiver { //use for daily notificat
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Notification")
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.drawable.girlpng)
-                .setLargeIcon(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.background), 128, 128,false))
+                .setLargeIcon(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ludogame), 130, 130,false))
                 .setContentTitle("EduKids")
                 .setContentText("This is a daily notification, let's play")
                 .setPriority(Notification.PRIORITY_DEFAULT)

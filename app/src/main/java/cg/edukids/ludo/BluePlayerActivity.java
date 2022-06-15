@@ -17,7 +17,7 @@ public class BluePlayerActivity extends AppCompatActivity {
     }
 
     public void startGame(View view){
-        Intent in= new Intent(BluePlayerActivity.this, SelectPlayerActivity.class);
+        Intent in= new Intent(BluePlayerActivity.this, StartGameActivity.class);
         startActivity(in);
     }
 }

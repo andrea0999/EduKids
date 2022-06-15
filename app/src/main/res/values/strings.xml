@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EduKids</string>
 
-    <string name="facebook_app_id">577958786830545</string>
+    <string name="facebook_app_id">1604780806588987</string>
 
     <string-array name="puzzleOptions">
         <item>Puzzle option…</item>

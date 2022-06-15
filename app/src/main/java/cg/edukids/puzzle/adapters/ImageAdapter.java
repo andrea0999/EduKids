@@ -32,7 +32,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
     private Context mcontext;
     private List<Integer> listImages;
     public static int getSelectPicture;
-    public static Bitmap get2dPicture;
+    //public static Bitmap get2dPicture;
 
     public ImageAdapter(){
 

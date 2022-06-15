@@ -11,6 +11,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="25dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="It is the player's turn with the displayed color"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="64dp">
 
         <ImageView
@@ -42,7 +57,7 @@
     <cg.edukids.ludo.CanvasBoardDraw
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/custom_canvas_1"
+        android:id="@+id/canvas_1"
         android:layout_gravity="center"/>
 
     <ImageView

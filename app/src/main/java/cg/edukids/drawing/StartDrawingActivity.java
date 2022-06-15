@@ -26,7 +26,6 @@ public class StartDrawingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_drawing);
-        //initTollbar();
 
         initView();
 
@@ -41,18 +40,6 @@ public class StartDrawingActivity extends AppCompatActivity {
         adapter = new ImageAdapter(this);
         recyclerView.setAdapter(adapter);
     }
-
-    /*private void initTollbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        int toolbar_item_color = ResourcesCompat.getColor(getResources(),R.color.blue, null);
-        toolbar.setTitleTextColor(toolbar_item_color);
-        toolbar.setSubtitleTextColor(toolbar_item_color);
-        getSupportActionBar().setTitle("My draw");
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.close);
-    }*/
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

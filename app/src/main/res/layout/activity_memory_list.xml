@@ -9,35 +9,37 @@
 
     <Button
         android:id="@+id/easyBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="140dp"
+        android:layout_height="64dp"
+        android:background="#BED8C5"
         android:text="Easy"
         app:layout_constraintBottom_toTopOf="@+id/mediumBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.636" />
+        app:layout_constraintVertical_bias="0.649" />
 
     <Button
         android:id="@+id/mediumBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="108dp"
+        android:layout_width="135dp"
+        android:layout_height="65dp"
+        android:layout_marginBottom="112dp"
+        android:background="#BED8C5"
         android:text="Medium"
         app:layout_constraintBottom_toTopOf="@+id/hardBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/hardBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="196dp"
+        android:layout_width="128dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="192dp"
+        android:background="#BED8C5"
         android:text="Hard"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

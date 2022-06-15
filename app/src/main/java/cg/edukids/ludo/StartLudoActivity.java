@@ -28,29 +28,22 @@ import cg.edukids.R;
 public class StartLudoActivity extends AppCompatActivity implements View.OnClickListener{//, SensorEventListener {
 
     public int height, width, top, bottom, d, n, PlayerNo;
-    public int x1 = 1, x2 = 1, x3 = 1, x4 = 1, x5 = 14, x6 = 14, x7 = 14, x8 = 14, x9 = 27, x10 = 27, x11 = 27, x12 = 27, x13 = 40, x14 = 40, x15 = 40, x16 = 40;
+    public int poz1 = 1, poz2 = 1, poz3 = 1, poz4 = 1, poz5 = 14, poz6 = 14, poz7 = 14, poz8 = 14, poz9 = 27, poz10 = 27, poz11 = 27, poz12 = 27, poz13 = 40, poz14 = 40, poz15 = 40, poz16 = 40;
     public CanvasBoardDraw boardDraw;
     public ImageView dice, red1, red2, red3, red4, green1, green2, green3, green4, blue1, blue2, blue3, blue4, yellow1, yellow2, yellow3, yellow4;
-    public int n1, n2, n3, n4;
+    public int n1, n2, n3, n4; //pioni
     public int extraN;
-    public int r1, r2, r3, r4 = 0, b1, b2, b3, b4 = 0, g1, g2, g3, g4 = 0, y1, y2, y3, y4 = 0;
-    public int r, b, g, y = 0;
+    public int r1 = 0, r2 = 0, r3 = 0, r4 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, g1 = 0, g2 = 0, g3 = 0, g4 = 0, y1 = 0, y2 = 0, y3 = 0, y4 = 0;
+    public int r = 0, b = 0, g = 0, y = 0;
     public ImageView player1, player2, player3, player4;
     private int iNumber;
-
-    private SensorManager senSensorManager;
-    private Sensor senAccelerometer;
-
-    private long lastUpdate = 0;
-    private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 600;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_ludo);
 
-        boardDraw = (CanvasBoardDraw) findViewById(R.id.custom_canvas_1);
+        boardDraw = (CanvasBoardDraw) findViewById(R.id.canvas_1);
         assignItems();
         Fill();
         Fill1(red1);
@@ -71,44 +64,8 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         Fill4(yellow4);
         StartGame();
 
-       /* senSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        senAccelerometer = senSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        senSensorManager.registerListener(this, senAccelerometer , SensorManager.SENSOR_DELAY_NORMAL);*/
 
     }
-/*
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) { //We will be using this method to detect the shake gesture
-        Sensor mySensor = sensorEvent.sensor;
-        if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            float x = sensorEvent.values[0];
-            float y = sensorEvent.values[1];
-            float z = sensorEvent.values[2];
-            long curTime = System.currentTimeMillis();
-            if ((curTime - lastUpdate) > 100) {
-                long diffTime = (curTime - lastUpdate);
-                lastUpdate = curTime;
-                float speed = Math.abs(x + y + z - last_x - last_y - last_z)/ diffTime * 10000;
-                if (speed > SHAKE_THRESHOLD) {
-                    RollDice();
-                }
-                last_x = x;
-                last_y = y;
-                last_z = z;
-            }
-        }
-    }
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-    }
-    protected void onPause() {
-        super.onPause();
-        senSensorManager.unregisterListener(this);
-    }
-    protected void onResume() {
-        super.onResume();
-        senSensorManager.registerListener(this, senAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-    }*/
 
     public void assignItems() {
 
@@ -164,7 +121,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams1.leftMargin = 3 * d / 2;
                 mParams1.topMargin = top + 1 * d / 2;
                 red1.setLayoutParams(mParams1);
-                r1 = 0; x1=1;
+                r1 = 0; poz1=1;
                 break;
             case R.id.ivRed2:
                 red2.getLayoutParams().height = d;
@@ -173,7 +130,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams2.leftMargin = 2 * d + 3 * d / 2;
                 mParams2.topMargin = top + 1 * d / 2;
                 red2.setLayoutParams(mParams2);
-                r2 = 0; x2=1;
+                r2 = 0; poz2=1;
                 break;
             case R.id.ivRed3:
                 red3.getLayoutParams().height = d;
@@ -182,7 +139,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams3.leftMargin = 3 * d / 2;
                 mParams3.topMargin = 2 * d + top + 1 * d / 2;
                 red3.setLayoutParams(mParams3);
-                r3 = 0; x3=1;
+                r3 = 0; poz3=1;
                 break;
             case R.id.ivRed4:
                 red4.getLayoutParams().height = d;
@@ -191,7 +148,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams4.leftMargin = 2 * d + 3 * d / 2;
                 mParams4.topMargin = 2 * d + top + 1 * d / 2;
                 red4.setLayoutParams(mParams4);
-                r4 = 0; x4=1;
+                r4 = 0; poz4=1;
                 break;
         }
 
@@ -208,7 +165,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams1.leftMargin = 9 * d + 3 * d / 2;
                 mParams1.topMargin = top + 1 * d / 2;
                 green1.setLayoutParams(mParams1);
-                g1 = 0;x5=14;
+                g1 = 0; poz5=14;
                 break;
             case R.id.ivGreen2:
                 green2.getLayoutParams().height = d;
@@ -217,7 +174,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams2.leftMargin = 11 * d + 3 * d / 2;
                 mParams2.topMargin = top + 1 * d / 2;
                 green2.setLayoutParams(mParams2);
-                g2 = 0;x6=14;
+                g2 = 0; poz6=14;
                 break;
             case R.id.ivGreen3:
                 green3.getLayoutParams().height = d;
@@ -226,7 +183,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams3.leftMargin = 9 * d + 3 * d / 2;
                 mParams3.topMargin = 2 * d + top + 1 * d / 2;
                 green3.setLayoutParams(mParams3);
-                g3 = 0;x7=14;
+                g3 = 0; poz7=14;
                 break;
             case R.id.ivGreen4:
                 green4.getLayoutParams().height = d;
@@ -235,7 +192,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams4.leftMargin = 11 * d + 3 * d / 2;
                 mParams4.topMargin = 2 * d + top + 1 * d / 2;
                 green4.setLayoutParams(mParams4);
-                g4 = 0;x8=14;
+                g4 = 0; poz8=14;
                 break;
         }
     }
@@ -251,7 +208,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams1.leftMargin = 9 * d + 3 * d / 2;
                 mParams1.topMargin = 9 * d + top + 1 * d / 2;
                 blue1.setLayoutParams(mParams1);
-                b1 = 0;x9=27;
+                b1 = 0; poz9=27;
                 break;
             case R.id.ivBlue2:
                 blue2.getLayoutParams().height = d;
@@ -260,7 +217,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams2.leftMargin = 11 * d + 3 * d / 2;
                 mParams2.topMargin = 9 * d + top + 1 * d / 2;
                 blue2.setLayoutParams(mParams2);
-                b2 = 0;x10=27;
+                b2 = 0; poz10=27;
                 break;
             case R.id.ivBlue3:
                 blue3.getLayoutParams().height = d;
@@ -269,7 +226,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams3.leftMargin = 9 * d + 3 * d / 2;
                 mParams3.topMargin = 11 * d + top + 1 * d / 2;
                 blue3.setLayoutParams(mParams3);
-                b3 = 0;x11=27;
+                b3 = 0; poz11=27;
                 break;
             case R.id.ivBlue4:
                 blue4.getLayoutParams().height = d;
@@ -278,7 +235,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams4.leftMargin = 11 * d + 3 * d / 2;
                 mParams4.topMargin = 11 * d + top + 1 * d / 2;
                 blue4.setLayoutParams(mParams4);
-                b4 = 0;x12=27;
+                b4 = 0; poz12=27;
                 break;
         }
     }
@@ -293,7 +250,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams1.leftMargin = 3 * d / 2;
                 mParams1.topMargin = 9 * d + top + 1 * d / 2;
                 yellow1.setLayoutParams(mParams1);
-                y1 = 0;x13=40;
+                y1 = 0; poz13=40;
                 break;
             case R.id.ivYellow2:
                 yellow2.getLayoutParams().height = d;
@@ -302,7 +259,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams2.leftMargin = 2 * d + 3 * d / 2;
                 mParams2.topMargin = 9 * d + top + 1 * d / 2;
                 yellow2.setLayoutParams(mParams2);
-                y2 = 0;x14=40;
+                y2 = 0; poz14=40;
                 break;
             case R.id.ivYellow3:
                 yellow3.getLayoutParams().height = d;
@@ -311,7 +268,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams3.leftMargin = 3 * d / 2;
                 mParams3.topMargin = 11 * d + top + 1 * d / 2;
                 yellow3.setLayoutParams(mParams3);
-                y3 = 0;x15=40;
+                y3 = 0; poz15=40;
                 break;
             case R.id.ivYellow4:
                 yellow4.getLayoutParams().height = d;
@@ -320,7 +277,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 mParams4.leftMargin = 2 * d + 3 * d / 2;
                 mParams4.topMargin = 11 * d + top + 1 * d / 2;
                 yellow4.setLayoutParams(mParams4);
-                y4 = 0;x16=40;
+                y4 = 0; poz16=40;
                 break;
         }
     }
@@ -336,48 +293,48 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
             case R.id.ivRed1:
 
                 if (r1 == 0) {
-                    mP.leftMargin = d;
-                    mP.topMargin = top + 6 * d;
+                    mP.leftMargin = 0;
+                    mP.topMargin = top + 5 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     r1 = 1;
-                } else x1 = PositionOf(x1, red1);
+                } else poz1 = PositionOf(poz1, red1);
                 checkPosition(red1);
                 break;
 
             case R.id.ivRed2:
 
                 if (r2 == 0) {
-                    mP.leftMargin = d;
-                    mP.topMargin = top + 6 * d;
+                    mP.leftMargin = 0;
+                    mP.topMargin = top + 5 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     r2 = 1;
-                } else x2 = PositionOf(x2, red2);
+                } else poz2 = PositionOf(poz2, red2);
                 checkPosition(red2);
                 break;
 
             case R.id.ivRed3:
 
                 if (r3 == 0) {
-                    mP.leftMargin = d;
-                    mP.topMargin = top + 6 * d;
+                    mP.leftMargin = 0;
+                    mP.topMargin = top + 5 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     r3 = 1;
-                } else x3 = PositionOf(x3, red3);
+                } else poz3 = PositionOf(poz3, red3);
                 checkPosition(red4);
                 break;
 
             case R.id.ivRed4:
 
                 if (r4 == 0) {
-                    mP.leftMargin = d;
-                    mP.topMargin = top + 6 * d;
+                    mP.leftMargin = 0;
+                    mP.topMargin = top + 5 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     r4 = 1;
-                } else x4 = PositionOf(x4, red4);
+                } else poz4 = PositionOf(poz4, red4);
                 checkPosition(red4);
                 break;
 
@@ -385,11 +342,11 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
                 if (g1 == 0) {
                     mP.leftMargin = 8 * d;
-                    mP.topMargin = top + d;
+                    mP.topMargin = top + -1 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     g1 = 1;
-                } else x5 = PositionOf(x5, green1);
+                } else poz5 = PositionOf(poz5, green1);
                 checkPosition(green1);
                 break;
 
@@ -397,11 +354,11 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
                 if (g2 == 0) {
                     mP.leftMargin = 8 * d;
-                    mP.topMargin = top + d;
+                    mP.topMargin = top + -1 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     g2 = 1;
-                } else x6 = PositionOf(x6, green2);
+                } else poz6 = PositionOf(poz6, green2);
                 checkPosition(green2);
                 break;
 
@@ -409,11 +366,11 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
                 if (g3 == 0) {
                     mP.leftMargin = 8 * d;
-                    mP.topMargin = top + d;
+                    mP.topMargin = top + -1 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     g3 = 1;
-                } else x7 = PositionOf(x7, green3);
+                } else poz7 = PositionOf(poz7, green3);
                 checkPosition(green3);
                 break;
 
@@ -421,58 +378,58 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
 
                 if (g4 == 0) {
                     mP.leftMargin = 8 * d;
-                    mP.topMargin = top + d;
+                    mP.topMargin = top + -1 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     g4 = 1;
-                } else x8 = PositionOf(x8, green4);
+                } else poz8 = PositionOf(poz8, green4);
                 checkPosition(green4);
                 break;
 
             case R.id.ivBlue1:
 
                 if (b1 == 0) {
-                    mP.leftMargin = 13 * d;
-                    mP.topMargin = top + 8 * d;
+                    mP.leftMargin = 14 * d;
+                    mP.topMargin = top + 7 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     b1 = 1;
-                } else x9 = PositionOf(x9, blue1);
+                } else poz9 = PositionOf(poz9, blue1);
                 checkPosition(blue1);
                 break;
 
             case R.id.ivBlue2:
 
                 if (b2 == 0) {
-                    mP.leftMargin = 13 * d;
-                    mP.topMargin = top + 8 * d;
+                    mP.leftMargin = 14 * d;
+                    mP.topMargin = top + 7 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     b2 = 1;
-                } else x10 = PositionOf(x10, blue2);
+                } else poz10 = PositionOf(poz10, blue2);
                 checkPosition(blue2);
                 break;
 
             case R.id.ivBlue3:
 
                 if (b3 == 0) {
-                    mP.leftMargin = 13 * d;
-                    mP.topMargin = top + 8 * d;
+                    mP.leftMargin = 14 * d;
+                    mP.topMargin = top + 7 * d;
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     b3 = 1;
-                } else x11 = PositionOf(x11, blue3);
+                } else poz11 = PositionOf(poz11, blue3);
                 checkPosition(blue3);
                 break;
 
             case R.id.ivBlue4:
 
                 if (b4 == 0) {
-                    mP.leftMargin = 13 * d;
-                    mP.topMargin = top + 8 * d;
+                    mP.leftMargin = 14 * d;
+                    mP.topMargin = top + 7 * d;
                     v.setLayoutParams(mP);
                     b4 = 1;
-                } else x12 = PositionOf(x12, blue4);
+                } else poz12 = PositionOf(poz12, blue4);
                 checkPosition(blue4);
                 break;
 
@@ -484,7 +441,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     y1 = 1;
-                } else x13 = PositionOf(x13, yellow1);
+                } else poz13 = PositionOf(poz13, yellow1);
                 checkPosition(yellow1);
                 break;
 
@@ -496,7 +453,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     y2 = 1;
-                } else x14 = PositionOf(x14, yellow2);
+                } else poz14 = PositionOf(poz14, yellow2);
                 checkPosition(yellow2);
                 break;
 
@@ -508,7 +465,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     y3 = 1;
-                } else x15 = PositionOf(x15, yellow3);
+                } else poz15 = PositionOf(poz15, yellow3);
                 checkPosition(yellow3);
                 break;
 
@@ -520,7 +477,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     v.setLayoutParams(mP);
                     SetDiceClickable();
                     y4 = 1;
-                } else x16 = PositionOf(x16, yellow4);
+                } else poz16 = PositionOf(poz16, yellow4);
                 checkPosition(yellow4);
                 break;
 
@@ -544,43 +501,43 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                     if (r4 == 1) {
                         red4.setOnClickListener(this);
                     }
-                    if (iNumber == 6) {//1
+                    if (iNumber == 6) {//6
                         r = 1;
                         red1.setOnClickListener(this);
                         red2.setOnClickListener(this);
                         red3.setOnClickListener(this);
                         red4.setOnClickListener(this);
-                    } else if (iNumber == 6 && r == 0) {
+                    } /*else if (iNumber == 6 && r == 0) {
                         PlayerNo++;
-                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
+                    }*/ else if (iNumber == 1 || iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
 
-                    n1 = x1 - 51 + iNumber;
-                    n2 = x2 - 51 + iNumber;
-                    n3 = x3 - 51 + iNumber;
-                    n4 = x4 - 51 + iNumber;
+                    n1 = poz1 - 51 + iNumber;
+                    n2 = poz2 - 51 + iNumber;
+                    n3 = poz3 - 51 + iNumber;
+                    n4 = poz4 - 51 + iNumber;
                     if (n1 == 6) {
                         red1.setVisibility(View.INVISIBLE);
-                        x1 = 0;
+                        poz1 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
                     if (n2 == 6) {
                         red2.setVisibility(View.INVISIBLE);
-                        x2 = 0;
+                        poz2 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
                     if (n3 == 6) {
                         red3.setVisibility(View.INVISIBLE);
-                        x3 = 0;
+                        poz3 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
                     if (n4 == 6) {
                         red4.setVisibility(View.INVISIBLE);
-                        x4 = 0;
+                        poz4 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
@@ -614,37 +571,37 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                         green2.setOnClickListener(this);
                         green3.setOnClickListener(this);
                         green4.setOnClickListener(this);
-                    } else if (iNumber == 6 && g == 0) {
+                    } /*else if (iNumber == 6 && g == 0) {
                         PlayerNo++;
-                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
+                    }*/ else if (iNumber == 1 || iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
 
-                    n1 = iNumber + x5 - 12;
-                    n2 = iNumber + x6 - 12;
-                    n3 = iNumber + x7 - 12;
-                    n4 = iNumber + x8 - 12;
+                    n1 = iNumber + poz5 - 12;
+                    n2 = iNumber + poz6 - 12;
+                    n3 = iNumber + poz7 - 12;
+                    n4 = iNumber + poz8 - 12;
                     if (n1 == 6 && green1.getTop() < top + 7 * d && green1.getLeft() == 7 * d) {
                         green1.setVisibility(View.INVISIBLE);
-                        x5 = 0;
+                        poz5 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
                     if (n2 == 6 && green2.getTop() < top + 7 * d && green2.getLeft() == 7 * d) {
                         green2.setVisibility(View.INVISIBLE);
-                        x6 = 0;
+                        poz6 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
                     if (n3 == 6 && green3.getTop() < top + 7 * d && green3.getLeft() == 7 * d) {
                         green3.setVisibility(View.INVISIBLE);
-                        x7 = 0;
+                        poz7 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
                     if (n4 == 6 && green4.getTop() < top + 7 * d && green4.getLeft() == 7 * d) {
                         green4.setVisibility(View.INVISIBLE);
-                        x8 = 0;
+                        poz8 = 0;
                         SetDiceClickable();
                         PlayerNo = pt;
                     }
@@ -681,45 +638,45 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                         blue4.setOnClickListener(this);
                     } else if (iNumber == 6 && b == 0) {
                         PlayerNo++;
-                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
+                    } else if(iNumber == 1 || iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
-                    n1 = iNumber + x9 - 25;
-                    n2 = iNumber + x10 - 25;
-                    n3 = iNumber + x11 - 25;
-                    n4 = iNumber + x12 - 25;
-                    if (n1 == 6 && blue1.getLeft() > 7 * d && blue1.getTop() == top + 7 * d) {
+                    n1 = iNumber + poz9 - 25;
+                    n2 = iNumber + poz10 - 25;
+                    n3 = iNumber + poz11 - 25;
+                    n4 = iNumber + poz12 - 25;
+                    if (n1 == 6 && blue1.getLeft() > 9 * d && blue1.getTop() == top + 6 * d) {
                         blue1.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x9 = 0;
+                        poz9 = 0;
                         SetDiceClickable();
                     }
-                    if (n2 == 6 && blue2.getLeft() > 7 * d && blue2.getTop() == top + 7 * d) {
+                    if (n2 == 6 && blue2.getLeft() > 9 * d && blue2.getTop() == top + 6 * d) {
                         blue2.setVisibility(View.INVISIBLE);
-                        x10 = 0;
+                        poz10 = 0;
                         PlayerNo = pt;
                         SetDiceClickable();
                     }
-                    if (n3 == 6 && blue3.getLeft() > 7 * d && blue3.getTop() == top + 7 * d) {
+                    if (n3 == 6 && blue3.getLeft() > 9 * d && blue3.getTop() == top + 6 * d) {
                         blue3.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x11 = 0;
+                        poz11 = 0;
                         SetDiceClickable();
                     }
-                    if (n4 == 6 && blue4.getLeft() > 7 * d && blue4.getTop() == top + 7 * d) {
+                    if (n4 == 6 && blue4.getLeft() > 9 * d && blue4.getTop() == top + 6 * d) {
                         blue4.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x12 = 0;
+                        poz12 = 0;
                         SetDiceClickable();
                     }
 
-                    if (n1 > 5 && blue1.getLeft() > 7 * d && blue1.getTop() == top + 7 * d || blue1.getVisibility() == View.INVISIBLE)
+                    if (n1 > 5 && blue1.getLeft() > 9 * d && blue1.getTop() == top + 7 * d || blue1.getVisibility() == View.INVISIBLE)
                         blue1.setClickable(false);
-                    if (n2 > 5 && blue2.getLeft() > 7 * d && blue2.getTop() == top + 7 * d || blue2.getVisibility() == View.INVISIBLE)
+                    if (n2 > 5 && blue2.getLeft() > 9 * d && blue2.getTop() == top + 7 * d || blue2.getVisibility() == View.INVISIBLE)
                         blue2.setClickable(false);
-                    if (n3 > 5 && blue3.getLeft() > 7 * d && blue3.getTop() == top + 7 * d || blue3.getVisibility() == View.INVISIBLE)
+                    if (n3 > 5 && blue3.getLeft() > 9 * d && blue3.getTop() == top + 7 * d || blue3.getVisibility() == View.INVISIBLE)
                         blue3.setClickable(false);
-                    if (n4 > 5 && blue4.getLeft() > 7 * d && blue4.getTop() == top + 7 * d || blue4.getVisibility() == View.INVISIBLE)
+                    if (n4 > 5 && blue4.getLeft() > 9 * d && blue4.getTop() == top + 7 * d || blue4.getVisibility() == View.INVISIBLE)
                         blue4.setClickable(false);
                     if (!blue1.isClickable() && !blue2.isClickable() && !blue3.isClickable() && !blue4.isClickable() || b == 0) {
                         SetDiceClickable();
@@ -745,35 +702,35 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                         yellow4.setOnClickListener(this);
                     } else if (iNumber == 6 && y == 0) {
                         PlayerNo++;
-                    } else if (iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
+                    } else if (iNumber == 1 || iNumber == 2 || iNumber == 3 || iNumber == 4 || iNumber == 5) {
                         PlayerNo++;
                     }
-                    n1 = iNumber + x13 - 38;
-                    n2 = iNumber + x14 - 38;
-                    n3 = iNumber + x15 - 38;
-                    n4 = iNumber + x16 - 38;
+                    n1 = iNumber + poz13 - 38;
+                    n2 = iNumber + poz14 - 38;
+                    n3 = iNumber + poz15 - 38;
+                    n4 = iNumber + poz16 - 38;
                     if (n1 == 6 && yellow1.getTop() > top + 6 * d && yellow1.getLeft() == 7 * d) {
                         yellow1.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x13 = 0;
+                        poz13 = 0;
                         SetDiceClickable();
                     }
                     if (n2 == 6 && yellow2.getTop() > top + 6 * d && yellow2.getLeft() == 7 * d) {
                         yellow2.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x14 = 0;
+                        poz14 = 0;
                         SetDiceClickable();
                     }
                     if (n3 == 6 && yellow3.getTop() > top + 6 * d && yellow3.getLeft() == 7 * d) {
                         yellow3.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x15 = 0;
+                        poz15 = 0;
                         SetDiceClickable();
                     }
                     if (n4 == 6 && yellow4.getTop() > top + 6 * d && yellow4.getLeft() == 7 * d) {
                         yellow4.setVisibility(View.INVISIBLE);
                         PlayerNo = pt;
-                        x16 = 0;
+                        poz16 = 0;
                         SetDiceClickable();
                     }
 
@@ -798,26 +755,28 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         if (red1.getVisibility()==View.INVISIBLE && red2.getVisibility()==View.INVISIBLE &&
                 red3.getVisibility()==View.INVISIBLE && red4.getVisibility()==View.INVISIBLE
         ){
+            //game won by red player
             Intent in=new Intent(StartLudoActivity.this, RedPlayerActivity.class);
             startActivity(in);
         }
         if (green1.getVisibility()==View.INVISIBLE && green2.getVisibility()==View.INVISIBLE &&
                 green3.getVisibility()==View.INVISIBLE && green4.getVisibility()==View.INVISIBLE
         ){
+            //game won by green player
             Intent in=new Intent(StartLudoActivity.this, GreenPlayerActivity.class);
             startActivity(in);
         }
         if (blue1.getVisibility()==View.INVISIBLE && blue2.getVisibility()==View.INVISIBLE &&
                 blue3.getVisibility()==View.INVISIBLE && blue4.getVisibility()==View.INVISIBLE
         ){
-            //game won by playerthree
+            //game won by blue player
             Intent in=new Intent(StartLudoActivity.this, BluePlayerActivity.class);
             startActivity(in);
         }
         if (yellow1.getVisibility()==View.INVISIBLE && yellow2.getVisibility()==View.INVISIBLE &&
                 yellow3.getVisibility()==View.INVISIBLE && yellow4.getVisibility()==View.INVISIBLE
         ){
-            //game won by playerfour
+            //game won by yellow player
             Intent in=new Intent(StartLudoActivity.this, YellowPlayerActivity.class);
             startActivity(in);
         }
@@ -835,7 +794,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
             player2.setImageResource(R.drawable.rectangle);
             player3.setImageResource(R.drawable.rectangle);
             player4.setImageResource(R.drawable.rectangle);
-        } else if (PlayerNo % 4 == 2) {
+        } else if (PlayerNo % 4 == 0) {
             player1.setImageResource(R.drawable.rectangle);
             player2.setImageResource(R.drawable.square_yellow);
             player3.setImageResource(R.drawable.rectangle);
@@ -845,7 +804,7 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
             player2.setImageResource(R.drawable.rectangle);
             player3.setImageResource(R.drawable.square_blue);
             player4.setImageResource(R.drawable.rectangle);
-        } else if (PlayerNo % 4 == 0) {
+        } else if (PlayerNo % 4 == 2) {
             player1.setImageResource(R.drawable.rectangle);
             player2.setImageResource(R.drawable.rectangle);
             player3.setImageResource(R.drawable.rectangle);
@@ -873,27 +832,6 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void RollDice(int x) {
-        /*Random randNumber = new Random();
-        iNumber = randNumber.nextInt(6) + 1;
-        System.out.println("randomNumber iNumber: " + iNumber);
-        if(iNumber == 1){
-            dice.setImageResource(R.drawable.one);
-        }else if(iNumber == 2){
-            dice.setImageResource(R.drawable.two);
-        }else if(iNumber == 3){
-            dice.setImageResource(R.drawable.three);
-        }else if(iNumber == 4){
-            dice.setImageResource(R.drawable.four);
-        }else if(iNumber == 5){
-            dice.setImageResource(R.drawable.five);
-        }else if(iNumber == 6){
-            dice.setImageResource(R.drawable.six);
-        }
-        dice.setVisibility(View.INVISIBLE);
-        Animation a = AnimationUtils.loadAnimation(this, R.anim.move_down_ball_first);
-        dice.setVisibility(View.VISIBLE);
-        dice.clearAnimation();
-        dice.startAnimation(a);*/
         if (x == 1) {
             dice.setImageResource(R.drawable.one);
         }
@@ -923,31 +861,10 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         Random randy = new Random();
         iNumber = randy.nextInt(6) + 1;
 
-        /*Random randNumber = new Random();
-        int iNumber = randNumber.nextInt(6) + 1;
-        if(iNumber == 1){
-            dice.setImageResource(R.drawable.one);
-        }else if(iNumber == 2){
-            dice.setImageResource(R.drawable.two);
-        }else if(iNumber == 3){
-            dice.setImageResource(R.drawable.three);
-        }else if(iNumber == 4){
-            dice.setImageResource(R.drawable.four);
-        }else if(iNumber == 5){
-            dice.setImageResource(R.drawable.five);
-        }else if(iNumber == 6){
-            dice.setImageResource(R.drawable.six);
-        }
-        dice.setVisibility(View.INVISIBLE);
-        Animation a = AnimationUtils.loadAnimation(this, R.anim.move_down_ball_first);
-        dice.setVisibility(View.VISIBLE);
-        dice.clearAnimation();
-        dice.startAnimation(a);*/
-
         return iNumber;
     }
 
-    private int PositionOf(int x, ImageView ivx) {
+    private int PositionOf(int x, ImageView ivx) { // pozitionare casa
 
         SetDiceClickable();
 
@@ -956,7 +873,8 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         int a = ivx.getId();
         if (a == R.id.ivGreen1 || a == R.id.ivGreen2 || a == R.id.ivGreen3 || a == R.id.ivGreen4
                 || a == R.id.ivBlue1 || a == R.id.ivBlue2 || a == R.id.ivBlue3 || a == R.id.ivBlue4
-                || a == R.id.ivYellow1 || a == R.id.ivYellow2 || a == R.id.ivYellow3 || a == R.id.ivYellow4) {
+                || a == R.id.ivYellow1 || a == R.id.ivYellow2 || a == R.id.ivYellow3 || a == R.id.ivYellow4){
+                //|| a == R.id.ivRed1 || a == R.id.ivRed2 || a == R.id.ivRed3 || a == R.id.ivRed4) {
             if (x > 52)
                 x = x - 52;
         }
@@ -966,23 +884,23 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 switch (extraN) {
                     case 1:
                         mParams.leftMargin = d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 6 * d; // 5 mod
                         break;
                     case 2:
                         mParams.leftMargin = 2 * d;
-                        mParams.topMargin = top + 9 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 3:
                         mParams.leftMargin = 3 * d;
-                        mParams.topMargin = top + 9 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 4:
                         mParams.leftMargin = 4 * d;
-                        mParams.topMargin = top + 9 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 5:
                         mParams.leftMargin = 5 * d;
-                        mParams.topMargin = top + 9 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                 }
                 ivx.setLayoutParams(mParams);
@@ -1024,23 +942,23 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
                 switch (extraN) {
                     case 1:
                         mParams.leftMargin = 13 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 2:
                         mParams.leftMargin = 12 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 3:
                         mParams.leftMargin = 11 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 4:
                         mParams.leftMargin = 10 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                     case 5:
                         mParams.leftMargin = 9 * d;
-                        mParams.topMargin = top + 7 * d;
+                        mParams.topMargin = top + 6 * d;
                         break;
                 }
                 ivx.setLayoutParams(mParams);
@@ -1082,212 +1000,212 @@ public class StartLudoActivity extends AppCompatActivity implements View.OnClick
         RelativeLayout.LayoutParams mParams = (RelativeLayout.LayoutParams) pp.getLayoutParams();
         switch (p) {
             case 1:
-                mParams.leftMargin = d;
-                mParams.topMargin = top + 6 * d;
+                mParams.leftMargin = 1;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 2:
                 mParams.leftMargin = 2 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 3:
                 mParams.leftMargin = 3 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 4:
                 mParams.leftMargin = 4 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 5:
                 mParams.leftMargin = 5 * d;
-                mParams.topMargin = top + 6 * d;
-                break;
+                mParams.topMargin = top + 5 * d;
+                break; // verificat
             case 6:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 5 * d;
+                mParams.topMargin = top + 4 * d;
                 break;
             case 7:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 4 * d;
+                mParams.topMargin = top + 3 * d;
                 break;
             case 8:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 3 * d;
+                mParams.topMargin = top + 2 * d;
                 break;
             case 9:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 2 * d;
+                mParams.topMargin = top + 1 * d;
                 break;
             case 10:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + d;
+                mParams.topMargin = top + 0 * d;
                 break;
             case 11:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top;
+                mParams.topMargin = top - 1;
                 break;
             case 12:
                 mParams.leftMargin = 7 * d;
-                mParams.topMargin = top;
+                mParams.topMargin = top -2;
                 break;
             case 13:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top;
+                mParams.topMargin = top -1;
                 break;
             case 14:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + d;
+                mParams.topMargin = top + 0 * d;
                 break;
             case 15:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 2 * d;
+                mParams.topMargin = top + 1 * d;
                 break;
             case 16:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 3 * d;
+                mParams.topMargin = top + 2 * d;
                 break;
             case 17:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 4 * d;
+                mParams.topMargin = top + 3 * d;
                 break;
             case 18:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 5 * d;
+                mParams.topMargin = top + 4 * d;
                 break;
             case 19:
                 mParams.leftMargin = 9 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 20:
                 mParams.leftMargin = 10 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 21:
                 mParams.leftMargin = 11 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 22:
                 mParams.leftMargin = 12 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 23:
                 mParams.leftMargin = 13 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 24:
                 mParams.leftMargin = 14 * d;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
             case 25:
                 mParams.leftMargin = 14 * d;
-                mParams.topMargin = top + 7 * d;
+                mParams.topMargin = top + 6 * d;
                 break;
             case 26:
                 mParams.leftMargin = 14 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 27:
-                mParams.leftMargin = 13 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.leftMargin = 13 * d; // mod
+                mParams.topMargin = top + 7 * d;
                 break;
             case 28:
                 mParams.leftMargin = 12 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 29:
                 mParams.leftMargin = 11 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 30:
                 mParams.leftMargin = 10 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 31:
                 mParams.leftMargin = 9 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 32:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 9 * d;
+                mParams.topMargin = top + 8 * d;
                 break;
             case 33:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 10 * d;
+                mParams.topMargin = top + 9 * d;
                 break;
             case 34:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 11 * d;
+                mParams.topMargin = top + 10 * d;
                 break;
             case 35:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 12 * d;
+                mParams.topMargin = top + 11 * d;
                 break;
             case 36:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 13 * d;
+                mParams.topMargin = top + 12 * d;
                 break;
             case 37:
                 mParams.leftMargin = 8 * d;
-                mParams.topMargin = top + 14 * d;
+                mParams.topMargin = top + 13 * d;
                 break;
             case 38:
                 mParams.leftMargin = 7 * d;
-                mParams.topMargin = top + 14 * d;
+                mParams.topMargin = top + 13 * d;
                 break;
             case 39:
-                mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 14 * d;
+                mParams.leftMargin = 6 * d; // 5 mod
+                mParams.topMargin = top + 13 * d;
                 break;
             case 40:
-                mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 13 * d;
+                mParams.leftMargin = 6 * d; //6 mod
+                mParams.topMargin = top + 12 * d;
                 break;
             case 41:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 12 * d;
+                mParams.topMargin = top + 11 * d;
                 break;
             case 42:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 11 * d;
+                mParams.topMargin = top + 10 * d;
                 break;
             case 43:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 10 * d;
+                mParams.topMargin = top + 9 * d;
                 break;
             case 44:
                 mParams.leftMargin = 6 * d;
-                mParams.topMargin = top + 9 * d;
+                mParams.topMargin = top + 8 * d;
                 break;
             case 45:
                 mParams.leftMargin = 5 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 46:
                 mParams.leftMargin = 4 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 47:
                 mParams.leftMargin = 3 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 48:
                 mParams.leftMargin = 2 * d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 49:
                 mParams.leftMargin = d;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 50:
                 mParams.leftMargin = 0;
-                mParams.topMargin = top + 8 * d;
+                mParams.topMargin = top + 7 * d;
                 break;
             case 51:
                 mParams.leftMargin = 0;
-                mParams.topMargin = top + 7 * d;
+                mParams.topMargin = top + 6 * d;
                 break;
             case 52:
                 mParams.leftMargin = 0;
-                mParams.topMargin = top + 6 * d;
+                mParams.topMargin = top + 5 * d;
                 break;
         }
         pp.setLayoutParams(mParams);
