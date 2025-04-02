@@ -28,7 +28,7 @@ import cg.edukids.profile.ProfileActivity;
 public class HomeActivity extends AppCompatActivity {
 
     private Button drawingNextBtn, drawingBtn, checkProgressBtn;
-    private int attention = 0, memory = 0, patience = 0;
+    private int attention = 0, memory = 0, patience = 0, Mathscore = 0;
     private Calendar calendar = Calendar.getInstance();;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");;
     private String date = dateFormat.format(calendar.getTime());;
@@ -87,6 +87,9 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 if (!snapshot.hasChild("patience")) {
                     reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("patience").setValue(patience);
+                }
+                if (!snapshot.hasChild("Mathscore")) {
+                    reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("Mathscore").setValue(patience);
                 }
             }
 

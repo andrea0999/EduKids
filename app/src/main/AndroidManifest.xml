@@ -13,6 +13,12 @@
     <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
 
     <uses-feature
         android:name="android.hardware.sensor.accelerometer"
@@ -27,9 +33,29 @@
         android:supportsRtl="true"
         android:theme="@style/FullScreen">
         <activity
-            android:name=".puzzle.Start2DActivity"
+            android:name=".learn.activity.AlphabetActivity"
             android:exported="false" />
-        <!-- uCrop cropping activity -->
+        <activity
+            android:name=".learn.activity.FruitActivity"
+            android:exported="false" />
+        <activity
+            android:name=".learn.activity.StartLearnActivity"
+            android:exported="false" />
+        <activity
+            android:name=".learn.LearnActivity"
+            android:exported="false" />
+        <activity
+            android:name=".math.activity.ProblemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".math.MathActivity"
+            android:exported="false" />
+        <activity
+            android:name=".memory.MemoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".puzzle.Start2DActivity"
+            android:exported="false" /> <!-- uCrop cropping activity -->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -81,9 +107,6 @@
             android:name=".memory.StartMemoryHardActivity"
             android:exported="false" />
         <activity
-            android:name=".memory.MemoryActivity"
-            android:exported="false" />
-        <activity
             android:name=".drawing.DrawActivity"
             android:exported="false" />
         <activity
@@ -113,7 +136,10 @@
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="text" />
 
         <receiver
             android:name=".MemoBroadcast"

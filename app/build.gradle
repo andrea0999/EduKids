@@ -4,16 +4,24 @@ plugins {
 }
 
 android {
-    compileSdk 30
+    namespace "cg.edukids"
+    compileSdk 34
 
     defaultConfig {
         applicationId "cg.edukids"
         minSdk 21
-        targetSdk 30
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+        //testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs += 'src/main/java'
+            res.srcDirs += 'src/main/res'
+        }
     }
 
     buildTypes {
@@ -26,17 +34,33 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    aaptOptions {
+        cruncherEnabled = false
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.10'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10'
+        force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10'
+    }
 }
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'com.android.support:multidex:1.0.0'
-    testImplementation 'junit:junit:4.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition-common:19.1.0'
+    implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.1'
+    implementation 'com.google.mlkit:digital-ink-recognition:18.1.0'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.google.firebase:firebase-database:20.0.3'
     //implementation 'com.google.firebase:firebase-auth:19.2.0'
@@ -49,9 +73,9 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
 
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
-    implementation 'com.google.android.material:material:1.1.0-alpha10'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.thebluealliance:spectrum:0.7.1'
-    implementation 'com.github.QuadFlask:colorpicker:0.0.15'
+    implementation 'com.github.QuadFlask:colorpicker:0.0.13'
     implementation 'de.hdodenhof:circleimageview:3.0.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
@@ -71,10 +95,19 @@ dependencies {
 
 
     //Butterknife
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'com.jakewharton:butterknife:10.2.3'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
 
+    implementation platform('com.google.firebase:firebase-bom:32.1.1') // Utilizează BOM pentru versiunile Firebase
+    implementation 'com.google.firebase:firebase-analytics' // Ex.: Analytics sau alt serviciu Firebase utilizat
+    //implementation 'com.odmlbook.digitalinktest:CustomDrawingSurface'
 
+}
+
+// Adaugă această secțiune pentru a rezolva problema ButterKnife
+tasks.withType(JavaCompile) {
+    options.fork = true
+    options.forkOptions.jvmArgs.addAll(['--add-exports', 'jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED'])
 }

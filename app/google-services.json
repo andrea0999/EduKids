@@ -1,8 +1,8 @@
 {
   "project_info": {
     "project_number": "307798230507",
+    "firebase_url": "https://edukids-e5534-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "edukids-e5534",
-    "firebase_url": " https://edukids-e5534-default-rtdb.europe-west1.firebasedatabase.app",
     "storage_bucket": "edukids-e5534.appspot.com"
   },
   "client": [
@@ -14,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "307798230507-4cuteavog4k6qlvrc20l7vfk7a75b9p2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "cg.edukids",
+            "certificate_hash": "efd6e3e4499dc1c23ef8b46b2cb5687943f0a56b"
+          }
+        },
         {
           "client_id": "307798230507-fql11npn83e5q42b1audo8fu25j80vip.apps.googleusercontent.com",
           "client_type": 3

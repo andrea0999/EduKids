@@ -2,6 +2,8 @@
     <string name="app_name">EduKids</string>
 
     <string name="facebook_app_id">1604780806588987</string>
+    <string name="default_web_client_id">307798230507-fql11npn83e5q42b1audo8fu25j80vip.apps.googleusercontent.com</string>
+
 
     <string-array name="puzzleOptions">
         <item>Puzzle option…</item>
@@ -15,4 +17,6 @@
         <item>20</item>
         <item>30</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
