@@ -8,9 +8,34 @@
 
     <ImageView
         android:id="@+id/alphabetImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="411dp"
+        android:layout_height="418dp"
         app:srcCompat="@drawable/ic_launcher_background"
-        tools:layout_editor_absoluteX="147dp"
-        tools:layout_editor_absoluteY="225dp" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="3dp" />
+
+    <cg.edukids.learn.utils.CustomDrawingSurfaceAlphabet
+        android:id="@+id/alphabetCanvas"
+        android:layout_width="411dp"
+        android:layout_height="211dp"
+        android:layout_centerInParent="true"
+        android:background="@color/gris_light"
+        app:layout_constraintBottom_toTopOf="@+id/checkAlphabetButton"
+        app:layout_constraintTop_toBottomOf="@+id/alphabetImage"
+        app:layout_constraintVertical_bias="0.468"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <Button
+        android:id="@+id/checkAlphabetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Check the answer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

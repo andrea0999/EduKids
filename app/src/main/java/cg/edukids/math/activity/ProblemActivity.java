@@ -49,6 +49,7 @@ public class ProblemActivity extends AppCompatActivity {
     private final RemoteModelManager remoteModelManager = RemoteModelManager.getInstance();
     private DigitalInkRecognitionModel model;
     private TextView mathAnswer;
+    private char forcedOperator = '\0';
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,12 @@ public class ProblemActivity extends AppCompatActivity {
         checkAnswerButton = findViewById(R.id.checkAnswerButton);
         canvasView = findViewById(R.id.problemCanvas);
         mathAnswer = findViewById(R.id.mathAnswer);
+
+        // Preluare operator din intent
+        String operator = getIntent().getStringExtra("operator");
+        if (operator != null && operator.length() == 1) {
+            forcedOperator = operator.charAt(0);
+        }
 
         try {
             initializeRecognition();
@@ -82,19 +89,19 @@ public class ProblemActivity extends AppCompatActivity {
                 difficultyLevel = 1;
             }
             problemGenerator = new ProblemGenerator(difficultyLevel);
+            if (forcedOperator != '\0') {
+                problemGenerator.setForcedOperator(forcedOperator);
+            }
             generateNewProblem();
         });
 
         checkAnswerButton.setOnClickListener(v -> {
             Log.d("ButtonClick", "Check Answer button clicked");
             processCanvasInput();
-            clearCanvas();
         });
     }
 
     private void initializeRecognition() throws MlKitException {
-        //DigitalInkRecognitionModelIdentifier modelIdentifier = DigitalInkRecognitionModelIdentifier.fromLanguageTag("zh-Hani");
-        //DigitalInkRecognitionModelIdentifier modelIdentifier = DigitalInkRecognitionModelIdentifier.fromLanguageTag("und-Latn");
         DigitalInkRecognitionModelIdentifier modelIdentifier = DigitalInkRecognitionModelIdentifier.fromLanguageTag("en-US");
 
         if (modelIdentifier != null) {
@@ -118,27 +125,24 @@ public class ProblemActivity extends AppCompatActivity {
         correctAnswer = String.valueOf(problemGenerator.getCorrectAnswer(currentProblem));
         problemText.setText(currentProblem);
     }
+
     private void processCanvasInput() {
-        // Resetăm mathAnswer înainte de recunoaștere
         mathAnswer.setText("");
 
         Ink thisInk = canvasView.getInk();
 
-        // Verificăm dacă există strokes
         if (thisInk.getStrokes().isEmpty()) {
             Log.e("Digital Ink Test", "No ink strokes detected, cannot recognize.");
             Toast.makeText(this, "Please write something before checking!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Verificăm dacă modelul este încărcat
         if (model == null) {
             Log.e("Digital Ink Test", "Model has not been loaded yet.");
             Toast.makeText(this, "Please wait for the model to load and try again!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Creăm recognizer
         recognizer = DigitalInkRecognition.getClient(
                 DigitalInkRecognizerOptions.builder(model).build()
         );
@@ -151,20 +155,16 @@ public class ProblemActivity extends AppCompatActivity {
                         return;
                     }
 
-                    // Obținem candidatul cel mai bun
                     RecognitionCandidate bestCandidate = result.getCandidates().get(0);
                     String recognizedText = bestCandidate.getText().replaceAll("[^0-9]", "");
 
                     if (recognizedText.isEmpty()) {
                         Toast.makeText(this, "Please write numbers only!", Toast.LENGTH_SHORT).show();
                     } else {
-                        Log.d("MathAnswerBefore", mathAnswer.getText().toString());
                         mathAnswer.setText(recognizedText);
-                        Log.d("MathAnswerAfter", mathAnswer.getText().toString());
                         validateAnswer(recognizedText);
                     }
 
-                    // Curățăm canvas-ul și creăm un nou Ink gol
                     clearCanvas();
                     canvasView.setInk(Ink.builder().build());
                 })
@@ -174,77 +174,23 @@ public class ProblemActivity extends AppCompatActivity {
                 });
     }
 
-    /*private void processCanvasInput() { // ok -ish
-        Ink thisInk = canvasView.getInk();
-
-        // Check if there are any ink strokes before recognition
-        if (thisInk.getStrokes().isEmpty()) {
-            Log.e("Digital Ink Test", "No ink strokes detected, cannot recognize.");
-            Toast.makeText(this, "Please write something before checking!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Check if the model has been downloaded
-        if (model == null) {
-            Log.e("Digital Ink Test", "Model has not been loaded yet.");
-            Toast.makeText(this, "Please wait for the model to load and try again!", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Create the recognizer
-        recognizer = DigitalInkRecognition.getClient(
-                DigitalInkRecognizerOptions.builder(model).build()
-        );
-
-        recognizer.recognize(thisInk)
-                .addOnSuccessListener(result -> {
-                    if (result.getCandidates().isEmpty()) {
-                        Log.e("Digital Ink Test", "No recognition candidates found.");
-                        Toast.makeText(this, "No recognition found. Please try again!", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    // Get the best candidate
-                    RecognitionCandidate bestCandidate = result.getCandidates().get(0);
-                    String recognizedText = bestCandidate.getText().replaceAll("[^0-9]", "");
-
-                    if (recognizedText.isEmpty()) {
-                        Toast.makeText(this, "Please write numbers only!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        //mathAnswer.setText("");
-                        //mathAnswer.setText("Your Answer");
-                        Log.d("MathAnswerBefore", mathAnswer.getText().toString());
-                        mathAnswer.setText("");
-                        mathAnswer.setText(recognizedText);
-                        Log.d("MathAnswerAfter", mathAnswer.getText().toString());
-                        validateAnswer(recognizedText);
-                    }
-                    //thisInk.getStrokes().clear();
-                    clearCanvas();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("Digital Ink Test", "Error during recognition: " + e.getMessage());
-                    Toast.makeText(this, "Recognition failed, please try again!", Toast.LENGTH_SHORT).show();
-                });
-    }*/
-
-
-
     private void validateAnswer(String recognizedText) {
         if (recognizedText.equals(correctAnswer)) {
             Mathscore += 10;
             difficultyLevel += 1;
-            Log.i("ProblemActivity", "Correct Answer!");
             Toast.makeText(this, "Correct! Your score is now: " + Mathscore, Toast.LENGTH_SHORT).show();
+
+            UserProgress progress = new UserProgress(Mathscore, difficultyLevel);
+            databaseManager.saveUserProgress(progress);
+            generateNewProblem();
         } else {
             difficultyLevel = Math.max(1, difficultyLevel - 1);
-            Log.i("ProblemActivity", "Incorrect Answer! Try again.");
             Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_SHORT).show();
-        }
 
-        UserProgress progress = new UserProgress(Mathscore, difficultyLevel);
-        databaseManager.saveUserProgress(progress);
-        generateNewProblem();
+            UserProgress progress = new UserProgress(Mathscore, difficultyLevel);
+            databaseManager.saveUserProgress(progress);
+            // Păstrăm aceeași problemă
+        }
     }
 
     private void clearCanvas() {
@@ -271,4 +217,5 @@ public class ProblemActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
+
 

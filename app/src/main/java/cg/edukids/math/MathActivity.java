@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import cg.edukids.HomeActivity;
 import cg.edukids.R;
 import cg.edukids.learn.LearnActivity;
+import cg.edukids.math.activity.MathListActivity;
 import cg.edukids.math.activity.ProblemActivity;
 import cg.edukids.memory.MemoryActivity;
 import cg.edukids.profile.ProfileActivity;
@@ -42,7 +43,7 @@ public class MathActivity extends AppCompatActivity {
         mathBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), ProblemActivity.class));
+                startActivity(new Intent(getApplicationContext(), MathListActivity.class));
             }
         });
 
