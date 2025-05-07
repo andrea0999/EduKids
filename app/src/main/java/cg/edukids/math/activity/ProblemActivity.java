@@ -15,7 +15,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.mlkit.common.MlKitException;
 import com.google.mlkit.common.model.DownloadConditions;
 import com.google.mlkit.common.model.RemoteModelManager;
@@ -27,9 +30,11 @@ import com.google.mlkit.vision.digitalink.DigitalInkRecognitionModelIdentifier;
 import com.google.mlkit.vision.digitalink.Ink;
 import com.google.mlkit.vision.digitalink.RecognitionCandidate;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 import cg.edukids.R;
 import cg.edukids.math.MathActivity;
-import cg.edukids.math.model.UserProgress;
 import cg.edukids.math.utils.CustomDrawingSurface;
 import cg.edukids.math.utils.DatabaseManager;
 import cg.edukids.math.utils.ProblemGenerator;
@@ -37,10 +42,8 @@ import cg.edukids.math.utils.ProblemGenerator;
 public class ProblemActivity extends AppCompatActivity {
     private ProblemGenerator problemGenerator;
     private String currentProblem;
-    private DatabaseManager databaseManager;
     private String userId;
     private int Mathscore = 0;
-    private int difficultyLevel;
     private String correctAnswer;
     private CustomDrawingSurface canvasView;
     private TextView problemText;
@@ -50,22 +53,29 @@ public class ProblemActivity extends AppCompatActivity {
     private DigitalInkRecognitionModel model;
     private TextView mathAnswer;
     private char forcedOperator = '\0';
+    private String todayDateKey;
+
+    private DatabaseManager databaseManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_problem);
 
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser == null) return;
+        userId = currentUser.getUid();
+
+        String date = new SimpleDateFormat("MMddyyyy").format(Calendar.getInstance().getTime());
+        todayDateKey = date;
+
         databaseManager = new DatabaseManager(userId);
-        DatabaseReference userProgressRef = databaseManager.getUserProgressReference();
 
         problemText = findViewById(R.id.problemText);
         checkAnswerButton = findViewById(R.id.checkAnswerButton);
         canvasView = findViewById(R.id.problemCanvas);
         mathAnswer = findViewById(R.id.mathAnswer);
 
-        // Preluare operator din intent
         String operator = getIntent().getStringExtra("operator");
         if (operator != null && operator.length() == 1) {
             forcedOperator = operator.charAt(0);
@@ -77,46 +87,33 @@ public class ProblemActivity extends AppCompatActivity {
             throw new RuntimeException(e);
         }
 
-        userProgressRef.get().addOnSuccessListener(dataSnapshot -> {
-            if (dataSnapshot.exists()) {
-                UserProgress progress = dataSnapshot.getValue(UserProgress.class);
-                if (progress != null) {
-                    Mathscore = progress.getScore();
-                    difficultyLevel = progress.getDifficultyLevel();
+        databaseManager.getMathscoreReference(todayDateKey).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Mathscore = snapshot.exists() ? snapshot.getValue(Integer.class) : 0;
+                problemGenerator = new ProblemGenerator();
+                if (forcedOperator != '\0') {
+                    problemGenerator.setForcedOperator(forcedOperator);
                 }
-            } else {
-                Mathscore = 0;
-                difficultyLevel = 1;
+                generateNewProblem();
             }
-            problemGenerator = new ProblemGenerator(difficultyLevel);
-            if (forcedOperator != '\0') {
-                problemGenerator.setForcedOperator(forcedOperator);
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ProblemActivity.this, "Failed to load score.", Toast.LENGTH_SHORT).show();
             }
-            generateNewProblem();
         });
 
-        checkAnswerButton.setOnClickListener(v -> {
-            Log.d("ButtonClick", "Check Answer button clicked");
-            processCanvasInput();
-        });
+        checkAnswerButton.setOnClickListener(v -> processCanvasInput());
     }
 
     private void initializeRecognition() throws MlKitException {
         DigitalInkRecognitionModelIdentifier modelIdentifier = DigitalInkRecognitionModelIdentifier.fromLanguageTag("en-US");
-
         if (modelIdentifier != null) {
             model = DigitalInkRecognitionModel.builder(modelIdentifier).build();
             remoteModelManager.download(model, new DownloadConditions.Builder().build())
-                    .addOnSuccessListener(unused -> {
-                        Log.i("InkSample", "Model Downloaded Successfully.");
-                        checkAnswerButton.setEnabled(true);
-                    })
-                    .addOnFailureListener(e -> {
-                        Log.e("InkSample", "Model download failed: " + e);
-                        Toast.makeText(this, "Failed to download model, please try later!", Toast.LENGTH_SHORT).show();
-                    });
-        } else {
-            Log.e("InkSample", "Model identifier is null.");
+                    .addOnSuccessListener(unused -> checkAnswerButton.setEnabled(true))
+                    .addOnFailureListener(e -> Toast.makeText(this, "Model download failed.", Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -128,39 +125,29 @@ public class ProblemActivity extends AppCompatActivity {
 
     private void processCanvasInput() {
         mathAnswer.setText("");
+        Ink ink = canvasView.getInk();
 
-        Ink thisInk = canvasView.getInk();
-
-        if (thisInk.getStrokes().isEmpty()) {
-            Log.e("Digital Ink Test", "No ink strokes detected, cannot recognize.");
-            Toast.makeText(this, "Please write something before checking!", Toast.LENGTH_SHORT).show();
+        if (ink.getStrokes().isEmpty()) {
+            Toast.makeText(this, "Write something first!", Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (model == null) {
-            Log.e("Digital Ink Test", "Model has not been loaded yet.");
-            Toast.makeText(this, "Please wait for the model to load and try again!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Model not loaded yet!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        recognizer = DigitalInkRecognition.getClient(
-                DigitalInkRecognizerOptions.builder(model).build()
-        );
+        recognizer = DigitalInkRecognition.getClient(DigitalInkRecognizerOptions.builder(model).build());
 
-        recognizer.recognize(thisInk)
+        recognizer.recognize(ink)
                 .addOnSuccessListener(result -> {
                     if (result.getCandidates().isEmpty()) {
-                        Log.e("Digital Ink Test", "No recognition candidates found.");
-                        Toast.makeText(this, "No recognition found. Please try again!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "No result found!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
-                    RecognitionCandidate bestCandidate = result.getCandidates().get(0);
-                    String recognizedText = bestCandidate.getText().replaceAll("[^0-9]", "");
-
-                    if (recognizedText.isEmpty()) {
-                        Toast.makeText(this, "Please write numbers only!", Toast.LENGTH_SHORT).show();
-                    } else {
+                    String recognizedText = result.getCandidates().get(0).getText().replaceAll("[^0-9]", "");
+                    if (!recognizedText.isEmpty()) {
                         mathAnswer.setText(recognizedText);
                         validateAnswer(recognizedText);
                     }
@@ -168,38 +155,23 @@ public class ProblemActivity extends AppCompatActivity {
                     clearCanvas();
                     canvasView.setInk(Ink.builder().build());
                 })
-                .addOnFailureListener(e -> {
-                    Log.e("Digital Ink Test", "Error during recognition: " + e.getMessage());
-                    Toast.makeText(this, "Recognition failed, please try again!", Toast.LENGTH_SHORT).show();
-                });
+                .addOnFailureListener(e -> Toast.makeText(this, "Recognition failed.", Toast.LENGTH_SHORT).show());
     }
 
     private void validateAnswer(String recognizedText) {
         if (recognizedText.equals(correctAnswer)) {
             Mathscore += 10;
-            difficultyLevel += 1;
-            Toast.makeText(this, "Correct! Your score is now: " + Mathscore, Toast.LENGTH_SHORT).show();
-
-            UserProgress progress = new UserProgress(Mathscore, difficultyLevel);
-            databaseManager.saveUserProgress(progress);
-            generateNewProblem();
+            Toast.makeText(this, "Correct! Score: " + Mathscore, Toast.LENGTH_SHORT).show();
         } else {
-            difficultyLevel = Math.max(1, difficultyLevel - 1);
             Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_SHORT).show();
-
-            UserProgress progress = new UserProgress(Mathscore, difficultyLevel);
-            databaseManager.saveUserProgress(progress);
-            // Păstrăm aceeași problemă
         }
+
+        databaseManager.updateMathscore(Mathscore, todayDateKey);
+        generateNewProblem();
     }
 
     private void clearCanvas() {
         canvasView.clearCanvas();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     @Override
@@ -217,5 +189,3 @@ public class ProblemActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-

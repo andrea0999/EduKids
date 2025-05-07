@@ -13,11 +13,11 @@
         app:srcCompat="@drawable/ic_launcher_background"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="3dp" />
+        tools:layout_editor_absoluteY="16dp" />
 
     <cg.edukids.learn.utils.CustomDrawingSurfaceAlphabet
         android:id="@+id/alphabetCanvas"
-        android:layout_width="411dp"
+        android:layout_width="510dp"
         android:layout_height="211dp"
         android:layout_centerInParent="true"
         android:background="@color/gris_light"
@@ -29,9 +29,10 @@
 
     <Button
         android:id="@+id/checkAlphabetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="165dp"
+        android:layout_height="52dp"
         android:layout_marginBottom="16dp"
+        android:background="#E66F2A"
         android:text="Check the answer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

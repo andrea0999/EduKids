@@ -3,12 +3,10 @@ package cg.edukids.math.utils;
 import java.util.Random;
 
 public class ProblemGenerator {
-    private int difficultyLevel;
     private Random random;
     private char forcedOperator; // '\0' înseamnă neforțat
 
-    public ProblemGenerator(int difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
+    public ProblemGenerator() {
         this.random = new Random();
         this.forcedOperator = '\0'; // implicit: orice operator
     }

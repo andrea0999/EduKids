@@ -28,6 +28,7 @@ import com.google.mlkit.vision.digitalink.Ink;
 import com.google.mlkit.vision.digitalink.RecognitionCandidate;
 
 import cg.edukids.R;
+import cg.edukids.learn.LearnActivity;
 import cg.edukids.learn.fragments.AlphabetFragment;
 import cg.edukids.learn.utils.CustomDrawingSurfaceAlphabet;
 
@@ -137,7 +138,11 @@ public class AlphabetActivity extends AppCompatActivity {
                 .setTitle("Congrats!")
                 .setMessage("You wrote the correct letter!")
                 .setPositiveButton("OK", (dialog, which) -> {
-                    startActivity(new Intent(this, AlphabetFragment.class));
+                    //startActivity(new Intent(this, AlphabetFragment.class));
+                    Intent intent = new Intent(this, StartLearnActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(intent);
+                    finish();
                 })
                 .setCancelable(false)
                 .show();

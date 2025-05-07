@@ -1,32 +1,21 @@
 package cg.edukids.math.model;
 
 public class UserProgress {
-
-    private int score;
-    private int difficultyLevel;
+    private int Mathscore;
 
     public UserProgress() {
         // Constructor gol necesar pentru Firebase
     }
 
-    public UserProgress(int score, int difficultyLevel) {
-        this.score = score;
-        this.difficultyLevel = difficultyLevel;
+    public UserProgress(int Mathscore) {
+        this.Mathscore = Mathscore;
     }
 
-    public int getScore() {
-        return score;
+    public int getMathscore() {
+        return Mathscore;
     }
 
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getDifficultyLevel() {
-        return difficultyLevel;
-    }
-
-    public void setDifficultyLevel(int difficultyLevel) {
-        this.difficultyLevel = difficultyLevel;
+    public void setMathscore(int Mathscore) {
+        this.Mathscore = Mathscore;
     }
 }

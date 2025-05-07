@@ -17,6 +17,7 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import cg.edukids.R;
 import cg.edukids.learn.LearnActivity;
 import cg.edukids.learn.adapter.MyAdapter;
+import cg.edukids.learn.fragments.AlphabetFragment;
 import cg.edukids.math.MathActivity;
 
 public class StartLearnActivity extends AppCompatActivity {
@@ -37,6 +38,8 @@ public class StartLearnActivity extends AppCompatActivity {
                     tab.setText(tabTitle[position]);
                 });
         tabLayoutMediator.attach();
+
+
     }
 
     @Override

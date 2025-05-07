@@ -23,7 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import cg.edukids.drawing.StartDrawingActivity;
 
 public class RegistrationActivity extends AppCompatActivity {
 
@@ -33,15 +32,12 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference reff = db.getReference();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
-        System.out.println("db: "+db + "reff: "+reff);
 
         remail = findViewById(R.id.email);
-        String email = remail.getText().toString();
         rpassword = findViewById(R.id.password);
         rpassword2 = findViewById(R.id.password2);
         registrationConfigBtn = findViewById(R.id.registrationConfigBtn);
@@ -54,39 +50,53 @@ public class RegistrationActivity extends AppCompatActivity {
                 String password = rpassword.getText().toString().trim();
                 String password2 = rpassword2.getText().toString().trim();
 
-                if(TextUtils.isEmpty(email)){
-                    remail.setError("Email is Required");
+                if (TextUtils.isEmpty(email)) {
+                    remail.setError("Email is required");
                     return;
                 }
 
-                if(TextUtils.isEmpty(password)){
-                    rpassword.setError("Password is Required");
+                if (TextUtils.isEmpty(password)) {
+                    rpassword.setError("Password is required");
                     return;
                 }
 
-                if(TextUtils.isEmpty(password2)){
-                    rpassword2.setError("Re-Entry Password is Required");
+                if (TextUtils.isEmpty(password2)) {
+                    rpassword2.setError("Re-entering password is required");
                     return;
                 }
-                if(password.length() < 6){
-                    rpassword.setError("Password Must by >= 6 characters");
+
+                if (password.length() < 6) {
+                    rpassword.setError("Password must be at least 6 characters");
+                    return;
                 }
 
-                //register the user in firebase
-                firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                if (!password.equals(password2)) {
+                    rpassword2.setError("Passwords do not match");
+                    return;
+                }
+
+                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
                             Toast.makeText(RegistrationActivity.this, "User created", Toast.LENGTH_SHORT).show();
                             FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                            System.out.println("curentUser: "+ currentFirebaseUser);
-                            reff.child(currentFirebaseUser.getUid()).child("Email").setValue(email);
-                            reff.child(currentFirebaseUser.getUid()).child("ImageURL").setValue("default");
-                            reff.child(currentFirebaseUser.getUid()).child("Password").setValue(password);
+                            String uid = currentFirebaseUser.getUid();
 
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
-                        }else {
-                            Toast.makeText(RegistrationActivity.this,"Error !" + task.getException().getMessage(),Toast.LENGTH_SHORT).show();
+                            try {
+                                String encryptedPassword = CryptoUtil.encrypt(password);
+
+                                reff.child(uid).child("Email").setValue(email);
+                                reff.child(uid).child("ImageURL").setValue("default");
+                                reff.child(uid).child("Password").setValue(encryptedPassword);
+
+                            } catch (Exception e) {
+                                Toast.makeText(RegistrationActivity.this, "Error encrypting password: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            }
+
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        } else {
+                            Toast.makeText(RegistrationActivity.this, "Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -96,22 +106,20 @@ public class RegistrationActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_back,menu);
+        getMenuInflater().inflate(R.menu.menu_back, menu);
         return true;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
         int id = item.getItemId();
 
-        if(id == R.id.close){
+        if (id == R.id.close) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        }else if(id == android.R.id.home){
+        } else if (id == android.R.id.home) {
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

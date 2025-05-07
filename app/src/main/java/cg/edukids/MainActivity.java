@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 this,
                 0,
                 intent,
-                PendingIntent.FLAG_IMMUTABLE // Important: Use FLAG_IMMUTABLE for Android S+
+                PendingIntent.FLAG_IMMUTABLE
         );
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);

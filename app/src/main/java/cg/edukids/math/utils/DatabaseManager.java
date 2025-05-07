@@ -3,20 +3,18 @@ package cg.edukids.math.utils;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import cg.edukids.math.model.UserProgress;
-
 public class DatabaseManager {
-    private DatabaseReference databaseReference;
+    private final DatabaseReference userRootRef;
 
     public DatabaseManager(String userId) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
+        this.userRootRef = FirebaseDatabase.getInstance().getReference().child(userId);
     }
 
-    public void saveUserProgress(UserProgress progress) {
-        databaseReference.setValue(progress);
+    public DatabaseReference getMathscoreReference(String dateKey) {
+        return userRootRef.child("Scor").child(dateKey).child("Mathscore");
     }
 
-    public DatabaseReference getUserProgressReference() {
-        return databaseReference;
+    public void updateMathscore(int value, String dateKey) {
+        userRootRef.child("Scor").child(dateKey).child("Mathscore").setValue(value);
     }
 }
