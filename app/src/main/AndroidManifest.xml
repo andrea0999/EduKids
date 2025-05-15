@@ -33,6 +33,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/FullScreen" >
+        <activity android:name=".labyrinth.MazeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".ludo.ui.SinglePlayerActivity"
+            android:exported="false" />
+        <activity android:name=".ludo.ui.MultiplayerLobbyActivity"
+            android:exported="false" />
+        <activity android:name=".ludo.ui.LudoMainMenuActivity"
+            android:exported="false" />
         <activity
             android:name=".math.activity.MathListActivity"
             android:exported="false" />
@@ -77,25 +86,7 @@
             android:name=".memory.StartMemoryEasyActivity"
             android:exported="false" />
         <activity
-            android:name=".ludo.StartLudoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ludo.YellowPlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ludo.RedPlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ludo.GreenPlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ludo.BluePlayerActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ludo.StartGameActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ludo.LudoGameActivity"
+            android:name=".labyrinth.MazeGameActivity"
             android:exported="false" />
         <activity
             android:name=".puzzle.StartPuzzleActivity"

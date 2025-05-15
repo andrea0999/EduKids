@@ -19,23 +19,34 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
 
 public class FacebookActivity extends MainActivity {
 
-
-    CallbackManager callbackManager;
+    private CallbackManager callbackManager;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_facebook);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         callbackManager = CallbackManager.Factory.create();
 
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null && !accessToken.isExpired()) {
+            handleFacebookAccessToken(accessToken);
+        } else {
+            LoginManager.getInstance().logInWithReadPermissions(
+                    this,
+                    Arrays.asList("public_profile", "email")
+            );
+        }
 
         LoginManager.getInstance().registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -46,12 +57,13 @@ public class FacebookActivity extends MainActivity {
 
                     @Override
                     public void onCancel() {
-                        // App code
+                        Toast.makeText(FacebookActivity.this, "Login Cancelled", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(FacebookException exception) {
-                        // App code
+                        Log.e("FacebookLogin", "Error: ", exception);
+                        Toast.makeText(FacebookActivity.this, "Login Error: " + exception.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -59,34 +71,28 @@ public class FacebookActivity extends MainActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
-        //Log.d(TAG, "handleFacebookAccessToken:" + token);
-
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = firebaseAuth.getCurrentUser();
                             updateUI(user);
                         } else {
-                            // If sign in fails, display a message to the user.
-                            //Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(FacebookActivity.this, "" + task.getException(), Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
+                            Toast.makeText(FacebookActivity.this, "Authentication Failed: " + task.getException(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
 
     private void updateUI(FirebaseUser user) {
-        startActivity(new Intent(FacebookActivity.this,HomeActivity.class));
+        startActivity(new Intent(FacebookActivity.this, HomeActivity.class));
+        finish();
     }
 }

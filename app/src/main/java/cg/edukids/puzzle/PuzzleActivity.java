@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cg.edukids.R;
-import cg.edukids.ludo.LudoGameActivity;
+import cg.edukids.labyrinth.MazeGameActivity;
 import cg.edukids.memory.MemoryActivity;
 import cg.edukids.profile.ProfileActivity;
 
@@ -33,7 +33,7 @@ public class PuzzleActivity extends AppCompatActivity {
         puzzleBackBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LudoGameActivity.class));
+                startActivity(new Intent(getApplicationContext(), MazeGameActivity.class));
             }
         });
 

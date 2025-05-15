@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background2"
-    tools:context=".ludo.LudoGameActivity">
+    tools:context=".labyrinth.MazeGameActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
         android:layout_width="311dp"
         android:layout_height="56dp"
         android:fontFamily="sans-serif-black"
-        android:text="LUDO GAME"
+        android:text="MAZE GAME"
         android:textColor="#66185D"
         android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"

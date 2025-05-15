@@ -47,7 +47,7 @@ public class ProblemActivity extends AppCompatActivity {
     private String correctAnswer;
     private CustomDrawingSurface canvasView;
     private TextView problemText;
-    private Button checkAnswerButton;
+    private Button checkAnswerButton, clean_whiteboard;
     private DigitalInkRecognizer recognizer;
     private final RemoteModelManager remoteModelManager = RemoteModelManager.getInstance();
     private DigitalInkRecognitionModel model;
@@ -75,6 +75,7 @@ public class ProblemActivity extends AppCompatActivity {
         checkAnswerButton = findViewById(R.id.checkAnswerButton);
         canvasView = findViewById(R.id.problemCanvas);
         mathAnswer = findViewById(R.id.mathAnswer);
+        clean_whiteboard = findViewById(R.id.clean_whiteboard);
 
         String operator = getIntent().getStringExtra("operator");
         if (operator != null && operator.length() == 1) {
@@ -105,6 +106,7 @@ public class ProblemActivity extends AppCompatActivity {
         });
 
         checkAnswerButton.setOnClickListener(v -> processCanvasInput());
+        clean_whiteboard.setOnClickListener(u -> undoResult());
     }
 
     private void initializeRecognition() throws MlKitException {
@@ -163,6 +165,7 @@ public class ProblemActivity extends AppCompatActivity {
             Mathscore += 10;
             Toast.makeText(this, "Correct! Score: " + Mathscore, Toast.LENGTH_SHORT).show();
         } else {
+            Mathscore -= 10;
             Toast.makeText(this, "Incorrect! Try again.", Toast.LENGTH_SHORT).show();
         }
 
@@ -170,6 +173,10 @@ public class ProblemActivity extends AppCompatActivity {
         generateNewProblem();
     }
 
+    private void undoResult(){
+        clearCanvas();
+        canvasView.setInk(Ink.builder().build());
+    }
     private void clearCanvas() {
         canvasView.clearCanvas();
     }

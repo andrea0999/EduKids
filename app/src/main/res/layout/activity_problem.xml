@@ -45,4 +45,17 @@
         android:text="Your Answer"
         android:textAlignment="center"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/clean_whiteboard"
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/problemCanvas"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="12dp"
+        android:background="@android:color/transparent"
+        android:outlineAmbientShadowColor="@color/orange"
+        android:outlineProvider="bounds"
+        android:text="Clean whiteboard" />
 </RelativeLayout>

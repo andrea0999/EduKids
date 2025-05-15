@@ -73,7 +73,7 @@
                         android:id="@+id/logoutBtn"
                         android:layout_width="150dp"
                         android:layout_height="40dp"
-                        android:layout_marginLeft="85dp"
+                        android:layout_marginLeft="105dp"
                         android:layout_marginTop="25dp"
                         android:layout_weight="10"
                         android:background="@color/white"
@@ -84,7 +84,7 @@
                         android:id="@+id/deleteBtn"
                         android:layout_width="150dp"
                         android:layout_height="47dp"
-                        android:layout_marginLeft="85dp"
+                        android:layout_marginLeft="105dp"
                         android:layout_marginTop="15dp"
                         android:layout_weight="10"
                         android:drawableLeft="@drawable/icons8_delete"
@@ -122,7 +122,7 @@
 
             <com.github.mikephil.charting.charts.LineChart
                 android:layout_width="400dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="15dp"
                 android:layout_height="500dp"
                 android:id="@+id/lineChart1"
                 android:layout_marginTop="30dp">
@@ -130,7 +130,7 @@
 
             <com.github.mikephil.charting.charts.LineChart
                 android:layout_width="400dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="15dp"
                 android:layout_height="500dp"
                 android:id="@+id/lineChart2"
                 android:layout_marginTop="30dp">
@@ -138,9 +138,17 @@
 
             <com.github.mikephil.charting.charts.LineChart
                 android:layout_width="400dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="15dp"
                 android:layout_height="500dp"
                 android:id="@+id/lineChart3"
+                android:layout_marginTop="30dp">
+            </com.github.mikephil.charting.charts.LineChart>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:layout_width="400dp"
+                android:layout_marginLeft="15dp"
+                android:layout_height="500dp"
+                android:id="@+id/lineChart4"
                 android:layout_marginTop="30dp">
             </com.github.mikephil.charting.charts.LineChart>
 

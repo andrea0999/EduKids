@@ -78,16 +78,11 @@ public class PuzzleListActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if(!spinner.getSelectedItem().toString().equalsIgnoreCase("Puzzle option…")){
-                    //Toast.makeText(PuzzleListActivity.this, spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                     if(spinner.getSelectedItem().toString().equalsIgnoreCase("Different: 2D")){
                         choose = spinner.getSelectedItem().toString();
                         System.out.println("choose: " + choose);
-                        //Intent intent = new Intent(getApplicationContext(), Start2DActivity.class);
-                        //startActivity(intent);
                     }else if(!spinner1.getSelectedItem().toString().equalsIgnoreCase("Number of Pieces")) {
-                        //Toast.makeText(PuzzleListActivity.this, spinner.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                         numberOfPieces = Integer.parseInt(spinner1.getSelectedItem().toString());
-                        //choose = spinner1.getSelectedItem().toString();
                         System.out.println("choose: " + choose);
 
                     }
@@ -97,10 +92,6 @@ public class PuzzleListActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), PuzzleListActivity.class);
                     startActivity(intent);
                 }
-                /*if(spinner.getSelectedItem().toString().equalsIgnoreCase("Puzzle option…")
-                        && spinner1.getSelectedItem().toString().equalsIgnoreCase("Number of Pieces")){
-                    Toast.makeText(PuzzleListActivity.this, "Please choose a valid option", Toast.LENGTH_SHORT).show();
-                }*/
 
             }
         })

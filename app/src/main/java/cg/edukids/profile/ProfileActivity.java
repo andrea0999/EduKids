@@ -82,7 +82,7 @@ public class ProfileActivity extends AppCompatActivity {
     public static final String INTENT_BITMAP_MAX_WIDTH = "max_width";
     public static final String INTENT_BITMAP_MAX_HEIGHT = "max_height";
 
-    private LineChart lineChart1, lineChart2, lineChart3;
+    private LineChart lineChart1, lineChart2, lineChart3, lineChart4;
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference reff = db.getReference();
 
@@ -90,8 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
     private List<Integer> listAttention = new ArrayList<>();
     private List<Integer> listMemory = new ArrayList<>();
     private List<Integer> listPatience = new ArrayList<>();
-
-
+    private List<Integer> listMath = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -192,6 +191,7 @@ public class ProfileActivity extends AppCompatActivity {
         lineChart1 = (LineChart) findViewById(R.id.lineChart1);
         lineChart2 = (LineChart) findViewById(R.id.lineChart2);
         lineChart3 = (LineChart) findViewById(R.id.lineChart3);
+        lineChart4 = (LineChart) findViewById(R.id.lineChart4);
         reff
                 .child(currentFirebaseUser.getUid()).child("Scor")
                 .addValueEventListener(new ValueEventListener() {
@@ -203,11 +203,13 @@ public class ProfileActivity extends AppCompatActivity {
                             System.out.println("profileActivity listAttention[0]: " + listAttention.get(0));
                             listMemory.add(snapshot.child(c.getKey()).child("memory").getValue(Integer.class));
                             listPatience.add(snapshot.child(c.getKey()).child("patience").getValue(Integer.class));
+                            listMath.add(snapshot.child(c.getKey()).child("Mathscore").getValue(Integer.class));
                         }
 
                         showChart(lineChart1, listAttention, "Attention", Color.GREEN);
                         showChart(lineChart2, listMemory, "Memory", Color.BLUE);
                         showChart(lineChart3, listPatience, "Patience", Color.RED);
+                        showChart(lineChart4, listMath, "Math", Color.MAGENTA);
 
                     }
 

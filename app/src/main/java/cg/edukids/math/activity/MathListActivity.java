@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import cg.edukids.R;
+import cg.edukids.math.MathActivity;
 import cg.edukids.memory.MemoryActivity;
 import cg.edukids.memory.StartMemoryEasyActivity;
 import cg.edukids.memory.StartMemoryHardActivity;
@@ -83,7 +84,7 @@ public class MathListActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.close)
-            startActivity(new Intent(getApplicationContext(), MemoryActivity.class));
+            startActivity(new Intent(getApplicationContext(), MathActivity.class));
 
         return super.onOptionsItemSelected(item);
     }

@@ -39,7 +39,7 @@
         android:background="@drawable/questionmark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.193" />
@@ -93,7 +93,7 @@
         android:id="@+id/btn5"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginStart="48dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="48dp"
         android:background="@drawable/questionmark"
         app:layout_constraintStart_toEndOf="@+id/btn4"
@@ -106,7 +106,7 @@
         android:layout_marginTop="48dp"
         android:background="@drawable/questionmark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.689"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toEndOf="@+id/btn5"
         app:layout_constraintTop_toBottomOf="@+id/btn3" />
 
@@ -114,8 +114,8 @@
         android:id="@+id/btn8"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="52dp"
         android:background="@drawable/questionmark"
         app:layout_constraintStart_toEndOf="@+id/btn7"
         app:layout_constraintTop_toBottomOf="@+id/btn5" />
@@ -124,10 +124,10 @@
         android:id="@+id/btn9"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="52dp"
         android:background="@drawable/questionmark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.689"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toEndOf="@+id/btn8"
         app:layout_constraintTop_toBottomOf="@+id/btn6" />
 
@@ -135,8 +135,8 @@
         android:id="@+id/btn11"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/questionmark"
         app:layout_constraintStart_toEndOf="@+id/btn10"
         app:layout_constraintTop_toBottomOf="@+id/btn8" />
@@ -145,10 +145,10 @@
         android:id="@+id/btn12"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="44dp"
         android:background="@drawable/questionmark"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.689"
+        app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toEndOf="@+id/btn11"
         app:layout_constraintTop_toBottomOf="@+id/btn9" />
 

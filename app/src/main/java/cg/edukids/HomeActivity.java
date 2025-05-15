@@ -17,26 +17,23 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import cg.edukids.drawing.StartDrawingActivity;
-import cg.edukids.ludo.LudoGameActivity;
+import cg.edukids.labyrinth.MazeGameActivity;
 import cg.edukids.profile.ProfileActivity;
 
 public class HomeActivity extends AppCompatActivity {
 
     private Button drawingNextBtn, drawingBtn, checkProgressBtn;
     private int attention = 0, memory = 0, patience = 0, Mathscore = 0;
-    private Calendar calendar = Calendar.getInstance();;
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");;
-    private String date = dateFormat.format(calendar.getTime());;
+    private Calendar calendar = Calendar.getInstance();
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("MMddyyyy");
+    private String dateKey = dateFormat.format(calendar.getTime());
 
     private FirebaseDatabase db = FirebaseDatabase.getInstance();
     private DatabaseReference reff = db.getReference();
     private FirebaseUser currentFirebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class HomeActivity extends AppCompatActivity {
         drawingNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), LudoGameActivity.class));
+                startActivity(new Intent(getApplicationContext(), MazeGameActivity.class));
             }
         });
 
@@ -67,30 +64,20 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        String x = date.substring(0,2);
-        String y = date.substring(3,5);
-        String z = date.substring(6,10);
-        System.out.println(x + " " + y + " " + z);
-        String total = x + y + z;
-        System.out.println(total);
+        DatabaseReference scorRef = reff.child(currentFirebaseUser.getUid()).child("Scor");
 
-        reff.addListenerForSingleValueEvent(new ValueEventListener() {
+        scorRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                if (!snapshot.hasChild("attention")) {
-                    System.out.println("test child");
-                    reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("attention").setValue(attention);
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (!snapshot.hasChild(dateKey)) {
+                    // Este o nouă zi – inițializăm valorile la 0
+                    DatabaseReference todayRef = scorRef.child(dateKey);
+                    todayRef.child("attention").setValue(attention);
+                    todayRef.child("memory").setValue(memory);
+                    todayRef.child("patience").setValue(patience);
+                    todayRef.child("Mathscore").setValue(Mathscore);
                 }
-                if (!snapshot.hasChild("memory")) {
-                    reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("memory").setValue(memory);
-                }
-                if (!snapshot.hasChild("patience")) {
-                    reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("patience").setValue(patience);
-                }
-                if (!snapshot.hasChild("Mathscore")) {
-                    reff.child(currentFirebaseUser.getUid()).child("Scor").child(total).child("Mathscore").setValue(patience);
-                }
+                // Dacă ziua există deja, nu facem nimic — păstrăm scorurile existente
             }
 
             @Override

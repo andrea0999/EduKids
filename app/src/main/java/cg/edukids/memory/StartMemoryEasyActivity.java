@@ -379,8 +379,6 @@ public class StartMemoryEasyActivity extends AppCompatActivity {
                 }
             });
 
-            System.out.println("date: "+ date);
-
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
                 public void run() {
