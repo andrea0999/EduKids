@@ -292,8 +292,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-
-
     private void Permissions() {
 
         Dexter.withActivity(this)
@@ -306,11 +304,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
             @Override
             public void onPermissionRationaleShouldBeShown(List<PermissionRequest> list, PermissionToken permissionToken) {
-
             }
-
         }).check();
-
     }
 
 

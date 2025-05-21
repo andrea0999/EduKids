@@ -1,5 +1,6 @@
 package cg.edukids;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ImageButton facebookBtn, googleBtn;
     FirebaseAuth firebaseAuth;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("ScheduleExactAlarm")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,10 +123,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void scheduleAlarm() {
+        createNotificationChannel();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 10);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 17);
+        calendar.set(Calendar.MINUTE, 24);
         calendar.set(Calendar.SECOND, 0);
 
         if (Calendar.getInstance().after(calendar)) {

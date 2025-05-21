@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EduKids</string>
+
+    <string name="title_alphabet">Alfabet</string>
+    <string name="title_fruit">Fructe</string>
+    <string name="title_animal">Animale</string>
+    <string name="language_label">Limba</string>
+
+    <string name="congrats">Felicitări!</string>
+    <string name="match_success">Ai recunoscut un sunet de animal!</string>
+    <string name="score">Scor</string>
+    <string name="speech_prompt">Vorbește acum</string>
+    <string name="speech_not_supported">Dispozitivul tău nu suportă această funcționalitate</string>
+    <string name="permission_required">Permisiunea pentru microfon este necesară pentru recunoaștere vocală</string>
+    <string-array name="fruit_array">
+        <item>Măr</item>
+        <item>Banană</item>
+        <item>Struguri</item>
+        <item>Portocală</item>
+        <item>Ananas</item>
+        <item>Căpșună</item>
+    </string-array>
+    <string-array name="alphabet_array">
+        <item>A</item><item>B</item><item>C</item><item>D</item><item>E</item><item>F</item>
+        <item>G</item><item>H</item><item>I</item><item>J</item><item>K</item><item>L</item>
+        <item>M</item><item>N</item><item>O</item><item>P</item><item>Q</item><item>R</item>
+        <item>S</item><item>T</item><item>U</item><item>V</item><item>W</item><item>X</item>
+        <item>Y</item><item>Z</item>
+    </string-array>
+    <string-array name="animal_array">
+        <item>flamingo</item><item>vulpe</item><item>delfin</item><item>câine</item>
+        <item>pisică</item><item>liliac</item><item>urs</item><item>fluture</item>
+        <item>maimuță</item><item>panda</item><item>papagal</item><item>tigru</item>
+    </string-array>
+
+</resources>

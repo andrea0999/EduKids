@@ -1,8 +1,12 @@
 package cg.edukids.learn.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,20 +18,11 @@ import android.widget.GridView;
 
 import cg.edukids.R;
 import cg.edukids.learn.activity.AlphabetActivity;
+import cg.edukids.learn.utils.localization.LocaleHelper;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AlphabetFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AlphabetFragment extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -35,15 +30,6 @@ public class AlphabetFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AlphabetFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AlphabetFragment newInstance(String param1, String param2) {
         AlphabetFragment fragment = new AlphabetFragment();
         Bundle args = new Bundle();
@@ -63,30 +49,33 @@ public class AlphabetFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alphabet, container, false);
 
-        String alphabet[] = new String[26];
-        for(int i = 0, j = 65; i < alphabet.length; i++, j++){
-            alphabet[i] = Character.toString((char) j);
-        }
+        String[] alphabet = getResources().getStringArray(R.array.alphabet_array);
 
         GridView alphabetList = view.findViewById(R.id.alphabetList);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_expandable_list_item_1, alphabet);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_expandable_list_item_1, alphabet);
         alphabetList.setAdapter(adapter);
-
         alphabetList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // Deschide activitatea și trimite 'name'
                 Intent i1 = new Intent(getContext(), AlphabetActivity.class);
                 i1.putExtra("name", alphabet[position]);
                 startActivity(i1);
             }
         });
 
+
         return view;
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        SharedPreferences prefs = context.getSharedPreferences("prefs", Context.MODE_PRIVATE);
+        String lang = prefs.getString("selected_lang", "en");
+        super.onAttach(LocaleHelper.setLocale(context, lang));
     }
 
 }

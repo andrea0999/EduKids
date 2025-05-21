@@ -1,7 +1,9 @@
 package cg.edukids.learn.activity;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import cg.edukids.R;
 import cg.edukids.learn.LearnActivity;
 import cg.edukids.learn.fragments.AlphabetFragment;
 import cg.edukids.learn.utils.CustomDrawingSurfaceAlphabet;
+import cg.edukids.learn.utils.localization.LocaleHelper;
 
 public class AlphabetActivity extends AppCompatActivity {
 
@@ -56,9 +59,18 @@ public class AlphabetActivity extends AppCompatActivity {
         int imgRes = getResources().getIdentifier(name, "drawable", getPackageName());
         alphabetImage.setImageResource(imgRes);
 
-        int mediaRes = getResources().getIdentifier(name, "raw", getPackageName());
-        MediaPlayer mp = MediaPlayer.create(getApplicationContext(), mediaRes);
-        mp.start();
+        String audioName = name.toLowerCase();
+
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        String lang = prefs.getString("selected_lang", "en");
+
+        String fileName = lang.equals("ro") ? audioName + "_ro" : audioName;
+        int resId = getResources().getIdentifier(fileName, "raw", getPackageName());
+
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, resId);
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
 
         try {
             initializeRecognition();
@@ -161,5 +173,12 @@ public class AlphabetActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), StartLearnActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        SharedPreferences prefs = newBase.getSharedPreferences("prefs", MODE_PRIVATE);
+        String lang = prefs.getString("selected_lang", "en");
+        super.attachBaseContext(LocaleHelper.setLocale(newBase, lang));
     }
 }

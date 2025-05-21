@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import cg.edukids.HomeActivity;
 import cg.edukids.R;
-import cg.edukids.labyrinth.MazeActivity;
 import cg.edukids.profile.ProfileActivity;
 import cg.edukids.puzzle.PuzzleActivity;
 
@@ -20,7 +19,7 @@ public class MazeGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ludo_game);
+        setContentView(R.layout.activity_maze_game);
 
         ludoNextBtn = findViewById(R.id.ludoNextBtn);
         ludoNextBtn.setOnClickListener(new View.OnClickListener() {

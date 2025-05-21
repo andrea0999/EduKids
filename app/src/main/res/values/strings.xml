@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EduKids</string>
 
-    <string name="facebook_app_id">1604780806588987</string>
+    <string name="facebook_app_id" translatable="false">1604780806588987</string>
     <string name="default_web_client_id">307798230507-fql11npn83e5q42b1audo8fu25j80vip.apps.googleusercontent.com</string>
 
 
@@ -18,6 +18,39 @@
         <item>30</item>
     </string-array>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_math_list">MathListActivity</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="title_activity_math_list" translatable="false">MathListActivity</string>
+
+    <!-- use for learning package -->
+    <string name="title_alphabet">Alphabet</string>
+    <string name="title_fruit">Fruits</string>
+    <string name="title_animal">Animals</string>
+    <string name="language_label">Language</string>
+
+    <string name="congrats">Congrats!</string>
+    <string name="match_success">You matched an animal sound!</string>
+    <string name="score">Score</string>
+    <string name="speech_prompt">Need To Speak</string>
+    <string name="speech_not_supported">Sorry, your device is not supported</string>
+    <string name="permission_required">Microphone permission is required for speech recognition</string>
+    <string-array name="fruit_array">
+        <item>Apple</item>
+        <item>Banana</item>
+        <item>Grapes</item>
+        <item>Orange</item>
+        <item>Pineapple</item>
+        <item>Strawberry</item>
+    </string-array>
+    <string-array name="alphabet_array">
+        <item>A</item><item>B</item><item>C</item><item>D</item><item>E</item><item>F</item>
+        <item>G</item><item>H</item><item>I</item><item>J</item><item>K</item><item>L</item>
+        <item>M</item><item>N</item><item>O</item><item>P</item><item>Q</item><item>R</item>
+        <item>S</item><item>T</item><item>U</item><item>V</item><item>W</item><item>X</item>
+        <item>Y</item><item>Z</item>
+    </string-array>
+    <string-array name="animal_array">
+        <item>flamingo</item><item>fox</item><item>dolphin</item><item>dog</item>
+        <item>cat</item><item>bat</item><item>bear</item><item>butterfly</item>
+        <item>monkey</item><item>panda</item><item>parrot</item><item>tiger</item>
+    </string-array>
 </resources>

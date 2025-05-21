@@ -119,27 +119,19 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
 
     private void save() {
 
-        // TEST SAVE VAR 1
-        Bitmap bitmap = drawView.getBitmap(); //getDrawingCache(); //((BitmapDrawable)drawView.getDrawable()).getBitmap();
+        Bitmap bitmap = drawView.getBitmap();
         String file_name = UUID.randomUUID() + ".jpg";
-        System.out.println("file_name: "+ file_name.getBytes());
         File root = Environment.getExternalStorageDirectory();
-        System.out.println("file: "+ root.getName());
         File folder = new File(root.toString() + File.separator + Environment.DIRECTORY_PICTURES + File.separator + getString(R.string.app_name));
-        System.out.println("folder: "+ folder.getName() + " " + folder.getAbsolutePath());
 
         FileOutputStream fos = null;
 
         if(!folder.exists()) {
             folder.mkdir();
-            System.out.println("!!!!! DIR: " + folder.getAbsolutePath());
         }
-        System.out.println("!!!!! DIR: " + folder.getAbsolutePath());
             try {
                 File outFile = new File(folder,file_name);
-                System.out.println("outFILE: " + outFile.getName());
                 fos = new FileOutputStream(outFile);
-                System.out.println("out: "+ fos.getChannel());
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
                 try {
                     fos.flush();
@@ -155,9 +147,6 @@ public class DrawActivity extends AppCompatActivity implements SpectrumPalette.O
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-
-            //fileShare = file_name;
-            //bitmapShare = bitmap;
 
         Toast.makeText(this, "Your drawing is saved!", Toast.LENGTH_SHORT).show();
         finish();
