@@ -13,32 +13,32 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 public class MemoBroadcast extends BroadcastReceiver { //use for daily notification
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Intent notificationIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (context.checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                return;
-            }
-        }
-
-        Intent i = new Intent(context, MainActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context,0, i, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "Notification")
-                .setContentIntent(pendingIntent)
-                .setSmallIcon(R.drawable.girlpng)
-                .setLargeIcon(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ludogame), 130, 130,false))
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "memoChannel")
+                .setSmallIcon(R.drawable.ludogame)
                 .setContentTitle("EduKids")
-                .setContentText("This is a daily notification, let's play")
-                .setPriority(Notification.PRIORITY_DEFAULT)
+                .setContentText("E timpul să înveți ceva nou!")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-        notificationManagerCompat.notify(200, builder.build());
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        // ✅ Verificăm dacă permisiunea a fost acordată (pentru Android 13+)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
+                ContextCompat.checkSelfPermission(context, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+
+            notificationManager.notify(1001, builder.build());
+        }
     }
+
 }

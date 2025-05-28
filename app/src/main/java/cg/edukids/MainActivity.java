@@ -3,13 +3,17 @@ package cg.edukids;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -108,52 +112,49 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "Notification";
-            CharSequence name = "EduKids";
-            String description = "EduKids Notification Channel";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(channelId, name, importance);
-            channel.setDescription(description);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 101);
+            }
+        }
 
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    "memoChannel",
+                    "EduKids memo Channel",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            if (manager != null) {
+                manager.createNotificationChannel(channel);
             }
         }
     }
 
+    @SuppressLint("ScheduleExactAlarm")
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void scheduleAlarm() {
-        createNotificationChannel();
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 17);
-        calendar.set(Calendar.MINUTE, 24);
-        calendar.set(Calendar.SECOND, 0);
-
-        if (Calendar.getInstance().after(calendar)) {
-            calendar.add(Calendar.DAY_OF_MONTH, 1);
-        }
-
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, MemoBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(
-                this,
-                0,
-                intent,
-                PendingIntent.FLAG_IMMUTABLE
-        );
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 10);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
-            Intent alarmIntent = new Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-            startActivity(alarmIntent);
+        // dacă ora a trecut, setează pentru ziua următoare
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-        } else {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        if (alarmManager != null) {
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(), pendingIntent);
         }
     }
 }

@@ -146,28 +146,17 @@ public class AnimalFragment extends Fragment {
         }
     }
 
-    /*private void startSpeechRecognition() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Need To Speak");
-
-        try {
-            startActivityForResult(intent, REQ_CODE);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "Sorry, your device is not supported", Toast.LENGTH_SHORT).show();
-        }
-    }*/
-
     private void startSpeechRecognition() {
         SharedPreferences prefs = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
         String lang = prefs.getString("selected_lang", "en");
 
-        Locale locale = lang.equals("ro") ? new Locale("ro", "RO") : Locale.ENGLISH;
+        String localeCode = lang.equals("ro") ? "ro-RO" : "en-US";
 
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, locale);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, localeCode);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, localeCode);
+        intent.putExtra(RecognizerIntent.EXTRA_ONLY_RETURN_LANGUAGE_PREFERENCE, true);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
 
         try {
@@ -176,6 +165,8 @@ public class AnimalFragment extends Fragment {
             Toast.makeText(getContext(), getString(R.string.speech_not_supported), Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
 
     @Override
@@ -190,23 +181,35 @@ public class AnimalFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+   @Override
+   public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+       super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQ_CODE && resultCode == getActivity().RESULT_OK && data != null) {
-            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-            if (result != null && !result.isEmpty()) {
-                String recognizedText = result.get(0).toLowerCase().trim();
-                ed1.setText(recognizedText);
+       if (requestCode == REQ_CODE && resultCode == getActivity().RESULT_OK && data != null) {
+           ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+           if (result != null && !result.isEmpty()) {
+               String recognizedText = result.get(0).toLowerCase().trim();
+               ed1.setText(recognizedText);
 
-                if (animalSounds.containsKey(recognizedText)) {
-                    score++;
-                    showSuccessDialog();
-                }
-            }
-        }
-    }
+               SharedPreferences prefs = requireContext().getSharedPreferences("prefs", Context.MODE_PRIVATE);
+               String lang = prefs.getString("selected_lang", "en");
+
+               if (lang.equals("ro")) {
+                   String displayed = ed1.getText().toString().toLowerCase().trim();
+                   if (recognizedText.equals(displayed)) {
+                       score++;
+                       showSuccessDialog();
+                   }
+               } else {
+                   if (animalSounds.containsKey(recognizedText)) {
+                       score++;
+                       showSuccessDialog();
+                   }
+               }
+           }
+       }
+   }
+
 
     private void showSuccessDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
